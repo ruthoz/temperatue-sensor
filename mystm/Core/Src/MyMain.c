@@ -24,10 +24,19 @@ int _write(int fd, char* ptr, int len)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 {
 	if(htim == &htim6){
-	ledOnTimerInterrupt(&ledB);
-	ledOnTimerInterrupt(&ledR);
-	clockOnTimerInterrupt(&clock1);
-	buzzerOnTimerInterrupt(&buzzer);
+    ////////////////led////////////////////////////////////
+	  ledOnTimerInterrupt(&ledB);
+	  ledOnTimerInterrupt(&ledR);
+
+	//////////////clock//////////////////////////////////
+	  clockOnTimerInterrupt(&clock1);
+
+	/////////////buzzer/////////////////////////////////
+	  buzzerOnTimerInterrupt(&buzzer);
+
+	///////////button//////////////////////////////////
+	  buttonOnTimerInterrupt (&button1);
+
 	}
 
 
@@ -51,39 +60,39 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 }
 
-int x=0;
+
 void mainloop()
 {
 	HAL_TIM_Base_Start_IT(&htim6);
 
 	ledInit(&ledB , LD2_GPIO_Port , LD2_Pin );
 	ledInit(&ledR , LD3_GPIO_Port , LD3_Pin );
-	buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
 	buzzerInit(&buzzer);
 	clockInit(&clock1);
+	buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
+	StateButon sw1State;
 
 	while(1)
 	{
-		if(button1.state != BUTTON_STATE_NONE){
-		   switch(button1.state)
+		sw1State = Button_checkState(&button1);
+
+		if(sw1State != BUTTON_STATE_NONE){
+		   switch(sw1State)
 		  {
 		     case BUTTON_STATE_PRESS:
-			 printf("BUTTON_STATE \r\n"); break;
+			 printf("STATE \n\r"); break;
 
 		     case BUTTON_LONG_PRESS:
-			 printf("BUTTON_LONG_PRESS \r\n"); break;
+			 printf("LONG \n\r"); break;
 
-		     case BUTTON_DOBULE_PRESS:
-			 printf("BUTTON_DOBULE_PRESS \r\n"); break;
+		     case BUTTON_DOUBLE_PRESS:
+			 printf("DOBULE \n\r"); break;
 		  }
-
+		   sw1State = BUTTON_STATE_NONE;
 		}
-		button1.state = BUTTON_STATE_NONE;
-	    setBrightness(x);
-	    x++;
-	    if(x>10){
-	    	x=0;
-	    }
+
+
+
 	}
 
 }
