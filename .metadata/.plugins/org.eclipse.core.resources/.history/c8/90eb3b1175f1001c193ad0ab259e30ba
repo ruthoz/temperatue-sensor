@@ -1,0 +1,27 @@
+#include "MyMain.h"
+#include "led.h"
+
+extern TIM_HandleTypeDef htim6;
+
+LED ledR;
+LED ledB;
+
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+
+	ledOnTimerInterrupt(&ledB);
+	ledOnTimerInterrupt(&ledR);
+
+}
+
+void mainloop()
+{
+
+	ledInit(&ledB , LD2_GPIO_Port , LD2_Pin );
+	ledInit(&ledR , LD3_GPIO_Port , LD3_Pin );
+
+	ledOn(&ledB);
+	ledBlink(&ledR, 10000);
+	HAL_TIM_Base_Start_IT(&htim6);
+}

@@ -1,0 +1,21 @@
+
+
+#ifndef INC_CLOCK_H_
+#define INC_CLOCK_H_
+
+typedef struct _clock
+{
+	uint32_t tick;
+	int seconds;
+	int minutes;
+	int hours;
+	int days;
+
+}CLOCK;
+
+void clockInit(CLOCK* clock);
+void clockOnInterrupt(CLOCK* clock);
+
+
+
+#endif /* INC_CLOCK_H_ */

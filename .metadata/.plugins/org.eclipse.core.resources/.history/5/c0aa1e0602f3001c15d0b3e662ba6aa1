@@ -1,0 +1,91 @@
+#include "MyMain.h"
+#include "led.h"
+#include "button.h"
+#include "buzzer.h"
+#include "clock.h"
+#include <stdio.h>
+
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim3;
+extern UART_HandleTypeDef huart2;
+
+LED ledR;
+LED ledB;
+BUTTON button1;
+StateBuzzer stateMusic = MUSIC_OFF;
+CLOCK clock1;
+
+int _write(int fd, char* ptr, int len)
+{
+	HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+	return len;
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
+{
+	if(htim == &htim6)
+	{
+	ledOnTimerInterrupt(&ledB);
+	ledOnTimerInterrupt(&ledR);
+	clockOnInterrupt(&clock1);
+	playNextNote();
+	}
+
+
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	buttonInterrupt(&button1);
+
+//	if(stateMusic == MUSIC_OFF)
+//	{
+//		stateMusic = MUSIC_ON;
+//
+//		HAL_TIM_Base_Start_IT(&htim6);
+//		HAL_TIM_Base_Start_IT(&htim3);
+//		HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+//		playNote(0);
+//	}
+//	else
+//	{
+//		stateMusic = MUSIC_OFF;
+//		HAL_TIM_Base_Stop_IT(&htim6);
+//		HAL_TIM_Base_Stop_IT(&htim3);
+//		HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);
+//	}
+}
+
+
+void mainloop()
+{
+	HAL_TIM_Base_Start_IT(&htim6);
+
+	ledInit(&ledB , LD2_GPIO_Port , LD2_Pin );
+	ledInit(&ledR , LD3_GPIO_Port , LD3_Pin );
+	buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
+	StateButon sw1State;
+	clockInit(&clock1);
+
+	while(1)
+	{
+		sw1State=checkState(button1.state);
+		if(sw1State != BUTTON_STATE_NONE)
+		{
+		 switch(sw1State)
+		 {
+		 case BUTTON_STATE_PRESS:
+			printf("BUTTON_STATE_PRESS \r\n"); break;
+
+		 case BUTTON_LONG_PRESS:
+			printf("BUTTON_LONG_PRESS \r\n"); break;
+
+		 case BUTTON_DOBULE_PRESS:
+			printf("BUTTON_DOBULE_PRESS \r\n"); break;
+		 }
+
+		}
+
+	}
+
+}

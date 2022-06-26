@@ -1,0 +1,73 @@
+#include "MyMain.h"
+#include "led.h"
+#include "button.h"
+#include "buzzer.h"
+#include "clock.h"
+
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim3;
+
+LED ledR;
+LED ledB;
+BUTTON button1;
+StateBuzzer stateMusic = MUSIC_OFF;
+CLOCK clock1;
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
+{
+	if(htim == &htim6)
+	{
+	ledOnTimerInterrupt(&ledB);
+	ledOnTimerInterrupt(&ledR);
+	clockOnInterrupt(&clock1);
+	playNextNote();
+	}
+
+
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	buttonInterrupt(&button1);
+
+	if(stateMusic == MUSIC_OFF)
+	{
+		stateMusic = MUSIC_ON;
+
+		HAL_TIM_Base_Start_IT(&htim6);
+		HAL_TIM_Base_Start_IT(&htim3);
+		HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+		playNote(0);
+	}
+	else
+	{
+		stateMusic = MUSIC_OFF;
+		HAL_TIM_Base_Stop_IT(&htim6);
+		HAL_TIM_Base_Stop_IT(&htim3);
+		HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);
+	}
+}
+
+
+void mainloop()
+{
+	HAL_TIM_Base_Start_IT(&htim6);
+
+	ledInit(&ledB , LD2_GPIO_Port , LD2_Pin );
+	ledInit(&ledR , LD3_GPIO_Port , LD3_Pin );
+	buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
+	clockInit(&clock1);
+
+	while(1)
+	{
+		if(button1.state != BUTTON_STATE_NONE)
+		{
+		switch(button1.state)
+		{
+
+		}
+
+		}
+	}
+
+}

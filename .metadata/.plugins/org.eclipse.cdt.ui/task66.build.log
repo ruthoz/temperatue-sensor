@@ -1,0 +1,10 @@
+18:53:15 **** Build of configuration Debug for project task66 ****
+make -j12 all 
+arm-none-eabi-size   task66.elf 
+   text	   data	    bss	    dec	    hex	filename
+  19140	    120	   1808	  21068	   524c	task66.elf
+Finished building: default.size.stdout
+ 
+
+18:53:15 Build Finished. 0 errors, 0 warnings. (took 234ms)
+

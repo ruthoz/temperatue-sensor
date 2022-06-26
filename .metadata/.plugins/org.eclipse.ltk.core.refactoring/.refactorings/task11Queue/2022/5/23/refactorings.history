@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;task11Queue/Core/Src/RingBuffer&apos; to &apos;RingBuffer.c&apos;" description="Rename resource &apos;RingBuffer&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/RingBuffer" name="RingBuffer.c" stamp="1654010608298" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;task11Queue/Core/Inc/RIngBuffer.h&apos; to &apos;RingBuffer.h&apos;" description="Rename resource &apos;RIngBuffer.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/RIngBuffer.h" name="RingBuffer.h" stamp="1654015694352" updateReferences="true"/>
+</session>

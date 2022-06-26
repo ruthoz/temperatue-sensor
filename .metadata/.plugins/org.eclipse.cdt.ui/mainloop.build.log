@@ -1,0 +1,10 @@
+16:41:32 **** Incremental Build of configuration Debug for project mainloop ****
+make -j12 all 
+arm-none-eabi-size   mainloop.elf 
+   text	   data	    bss	    dec	    hex	filename
+  28148	    120	   2040	  30308	   7664	mainloop.elf
+Finished building: default.size.stdout
+ 
+
+16:41:32 Build Finished. 0 errors, 0 warnings. (took 307ms)
+

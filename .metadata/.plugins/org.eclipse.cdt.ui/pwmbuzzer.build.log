@@ -1,0 +1,10 @@
+20:16:35 **** Incremental Build of configuration Debug for project pwmbuzzer ****
+make -j12 all 
+arm-none-eabi-size   pwmbuzzer.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20488	    212	   1860	  22560	   5820	pwmbuzzer.elf
+Finished building: default.size.stdout
+ 
+
+20:16:36 Build Finished. 0 errors, 0 warnings. (took 291ms)
+

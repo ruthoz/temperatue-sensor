@@ -1,0 +1,18 @@
+
+
+#ifndef INC_BUZZER_H_
+#define INC_BUZZER_H_
+
+#include "main.h"
+
+typedef enum StateBuzzer_
+{
+	MUSIC_ON,
+	MUSIC_OFF,
+
+}StateBuzzer;
+
+void playNote();
+void playNextNote(int indexNote);
+
+#endif /* INC_BUZZER_H_ */

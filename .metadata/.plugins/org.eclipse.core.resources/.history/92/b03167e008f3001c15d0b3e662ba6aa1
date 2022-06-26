@@ -1,0 +1,55 @@
+#include "buzzer.h"
+
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim3;
+
+
+int note []={ 390, 340, 303, 286, 255, 227, 202};
+int noteJonatan []= {255 , 303,  303,  286, 340, 340, 390, 340, 303, 286, 255, 255, 255, 255 , 303,  303,  286, 340, 340 ,390, 303, 255, 255,390};
+int periodeJonatan[]={2499,2499,4999, 2499, 2499,4999,2499,2499,2499 ,2499,4999,2499,2499, 2499,2499,4999, 2499, 2499,4999,2499,2499,2499 ,4999};
+
+
+void buzzerInit(BUZZER* buzzer)
+{
+	buzzer->state = MUSIC_OFF;
+	buzzer->currentNote = 0;
+	buzzer->indexNote = 0;
+	buzzer->counter = 0;
+
+}
+
+void playNote(int indexNote)
+{
+	buzzer->counter++;
+	if(buzzer->counter < periodeJonatan[currentNote]){
+	   currentNote = indexNote;
+	   __HAL_TIM_SET_COUNTER(&htim3,0);
+	   __HAL_TIM_SET_AUTORELOAD(&htim3, noteJonatan[currentNote]);
+	   __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, (noteJonatan[currentNote]/2));
+	}
+	else{
+		buzzer->counter = 0;
+	}
+
+}
+
+void playNextNote()
+{
+	currentNote++;
+	if(currentNote>=22)
+	{
+	   currentNote= 0;
+	}
+	playNote(currentNote);
+}
+
+void buzzerOnTimerInterrupt()
+{
+	buzzer->currentNote++;
+	if(buzzer->currentNote >= 22)
+		{
+		buzzer->currentNote= 0;
+		}
+		playNote(currentNote);
+}
+
