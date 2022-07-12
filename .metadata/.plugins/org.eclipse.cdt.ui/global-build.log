@@ -1,19 +1,21 @@
-20:57:36 **** Incremental Build of configuration Debug for project mystm ****
+21:20:05 **** Incremental Build of configuration Debug for project mystm ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
-../Core/Src/MyMain.c: In function 'mainloop':
-../Core/Src/MyMain.c:79:6: warning: enumeration value 'BUTTON_STATE_NONE' not handled in switch [-Wswitch]
-   79 |      switch(sw1State)
-      |      ^~~~~~
-../Core/Src/MyMain.c:79:6: warning: enumeration value 'BUTTON_STATE' not handled in switch [-Wswitch]
+arm-none-eabi-gcc "../Core/Src/commTask.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/commTask.d" -MT"Core/Src/commTask.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/commTask.o"
 arm-none-eabi-gcc -o "mystm.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\mystm\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="mystm.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: mystm.elf
  
 arm-none-eabi-size   mystm.elf 
 arm-none-eabi-objdump -h -S  mystm.elf  > "mystm.list"
    text	   data	    bss	    dec	    hex	filename
-  25448	    312	   2056	  27816	   6ca8	mystm.elf
+  29340	    312	   2488	  32140	   7d8c	mystm.elf
 Finished building: default.size.stdout
  
 Finished building: mystm.list
+ 
+21:20:11 **** Incremental Build of configuration Debug for project mystm ****
+make -j12 all 
+arm-none-eabi-size   mystm.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29340	    312	   2488	  32140	   7d8c	mystm.elf
+Finished building: default.size.stdout
  

@@ -23,8 +23,8 @@ typedef struct _led
 }LED;
 
 void ledInit(LED* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
-void ledOn(LED* led);
-void ledOff(LED* led);
+void ledOn(void* obg);
+void ledOff(void* obg);
 void ledBlink(LED* led, int period);
 void ledOnTimerInterrupt(LED* led);
 void setBrightness(int brightness);

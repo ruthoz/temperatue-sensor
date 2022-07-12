@@ -3,6 +3,8 @@
 #include "button.h"
 #include "buzzer.h"
 #include "clock.h"
+#include "commTask.h"
+#include "CLI.h"
 #include <stdio.h>
 
 extern TIM_HandleTypeDef htim6;
@@ -61,6 +63,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 }
 
 
+
+
+
 void mainloop()
 {
 	HAL_TIM_Base_Start_IT(&htim6);
@@ -70,26 +75,30 @@ void mainloop()
 	buzzerInit(&buzzer);
 	clockInit(&clock1);
 	buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
-	StateButon sw1State;
+//	StateButon sw1State;
+	cliInit();
 
 	while(1)
 	{
-		sw1State = Button_checkState(&button1);
-
-		if(sw1State != BUTTON_STATE_NONE){
-		   switch(sw1State)
-		  {
-		     case BUTTON_STATE_PRESS:
-			 printf("STATE \n\r"); break;
-
-		     case BUTTON_LONG_PRESS:
-			 printf("LONG \n\r"); break;
-
-		     case BUTTON_DOUBLE_PRESS:
-			 printf("DOBULE \n\r"); break;
-		  }
-		   sw1State = BUTTON_STATE_NONE;
+		if (commTask()){
+			 handleCommand();
 		}
+//		sw1State = Button_checkState(&button1);
+//
+//		if(sw1State != BUTTON_STATE_NONE){
+//		   switch(sw1State)
+//		  {
+//		     case BUTTON_STATE_PRESS:
+//			 printf("STATE \n\r"); break;
+//
+//		     case BUTTON_LONG_PRESS:
+//			 printf("LONG \n\r"); break;
+//
+//		     case BUTTON_DOUBLE_PRESS:
+//			 printf("DOBULE \n\r"); break;
+//		  }
+//		   sw1State = BUTTON_STATE_NONE;
+//		}
 
 
 

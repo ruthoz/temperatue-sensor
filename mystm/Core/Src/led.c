@@ -10,14 +10,16 @@ void ledInit(LED* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
  led->GPIO_Pin = GPIO_Pin;
 }
 
-void ledOn(LED* led)
+void ledOn(void* obg)
 {
+	LED *led = (LED*)obg;
 	led->state = STATE_ON;
     HAL_GPIO_WritePin(led->GPIOx, led->GPIO_Pin, 1);
 }
 
-void ledOff(LED* led)
+void ledOff(void* obg)
 {
+    LED *led = (LED*)obg;
 	led->state = STATE_OFF;
     HAL_GPIO_WritePin(led->GPIOx, led->GPIO_Pin, 0);
 }
