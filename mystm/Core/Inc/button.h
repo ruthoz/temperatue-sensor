@@ -18,21 +18,21 @@ typedef enum StateButon_
 	BUTTON_STATE_PRESS,
 	BUTTON_LONG_PRESS,
 	BUTTON_DOUBLE_PRESS,
-}StateButon;
+}StateButton;
 
-typedef struct _button
+typedef struct _Button
 {
-	StateButon state;
+	StateButton state;
 	uint32_t timeTickOn;
 	uint32_t timeTickOff;
 	GPIO_TypeDef* GPIOx;
 	uint16_t GPIO_Pin;
 
-}BUTTON;
+}Button;
 
-void buttonInit(BUTTON* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
-void buttonInterrupt(BUTTON* button);
-void buttonOnTimerInterrupt (BUTTON* button);
-StateButon Button_checkState(BUTTON* button);
+void Button_init(Button* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
+void Button_interrupt(Button* button);
+void Button_onTimerInterrupt (Button* button);
+StateButton Button_checkState(Button* button);
 
 #endif /* INC_BUTTON_H_ */

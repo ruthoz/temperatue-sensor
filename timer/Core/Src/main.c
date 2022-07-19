@@ -110,7 +110,7 @@ void ledStop()
 uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
 int cmdcount = 0;
 
-int commTask()
+int Communication_commTask()
 {
 	uint8_t ch;
 
@@ -150,7 +150,7 @@ int _write(int fd, char* ptr, int len)
 
 
 
-void handleCommand()
+void Communication_handleCommand()
 {
   char cmd[20];
   int maxCount;
@@ -227,9 +227,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-	  	  if (commTask())
+	  	  if (Communication_commTask())
 	  	  {
-	  		  handleCommand();
+	  		  Communication_handleCommand();
 	  	  }
 
     /* USER CODE BEGIN 3 */

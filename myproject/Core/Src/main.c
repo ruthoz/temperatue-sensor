@@ -190,7 +190,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	/*HAL_StatusTypeDef Status = */HAL_UART_Receive_IT(&huart2, &ch, 1);
 }
 
-int commTask()
+int Communication_commTask()
 {
 	// just wait for interrupt to set cmdcount
 	if (!cmdcount)
@@ -213,7 +213,7 @@ int commTask()
 	return 1;
 }
 
-void handleCommand()
+void Communication_handleCommand()
 {
   char cmd[20];
   int maxCount;
@@ -300,9 +300,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  ledTask();
-	  if (commTask())
+	  if (Communication_commTask())
 	  {
-		  handleCommand();
+		  Communication_handleCommand();
 	  }
   }
   /* USER CODE END 3 */

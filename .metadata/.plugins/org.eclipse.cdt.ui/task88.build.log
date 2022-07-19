@@ -1,4 +1,4 @@
-18:53:16 **** Build of configuration Debug for project task88 ****
+18:28:31 **** Build of configuration Debug for project task88 ****
 make -j12 all 
 arm-none-eabi-size   task88.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   task88.elf
 Finished building: default.size.stdout
  
 
-18:53:16 Build Finished. 0 errors, 0 warnings. (took 236ms)
+18:28:31 Build Finished. 0 errors, 0 warnings. (took 290ms)
 

@@ -1,4 +1,4 @@
-18:53:14 **** Build of configuration Debug for project task11Queue ****
+18:28:25 **** Build of configuration Debug for project task11Queue ****
 make -j12 all 
 arm-none-eabi-size   task11Queue.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   task11Queue.elf
 Finished building: default.size.stdout
  
 
-18:53:14 Build Finished. 0 errors, 0 warnings. (took 232ms)
+18:28:25 Build Finished. 0 errors, 0 warnings. (took 217ms)
 

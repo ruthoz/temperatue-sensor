@@ -1,37 +1,36 @@
-#include "led.h"
+#include <Led.h>
 #include <stdio.h>
+
 extern TIM_HandleTypeDef htim4;
 
-void ledInit(LED* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
+void Led_init(Led* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
- led->state = STATE_OFF;
- led->counter = 0 ;
- led->GPIOx = GPIOx;
- led->GPIO_Pin = GPIO_Pin;
+	led->state = STATE_OFF;
+	led->counter = 0 ;
+	led->GPIOx = GPIOx;
+	led->GPIO_Pin = GPIO_Pin;
 }
 
-void ledOn(void* obg)
+void Led_on(Led* led)
 {
-	LED *led = (LED*)obg;
 	led->state = STATE_ON;
     HAL_GPIO_WritePin(led->GPIOx, led->GPIO_Pin, 1);
 }
 
-void ledOff(void* obg)
+void Led_off(Led* led)
 {
-    LED *led = (LED*)obg;
 	led->state = STATE_OFF;
     HAL_GPIO_WritePin(led->GPIOx, led->GPIO_Pin, 0);
 }
 
-void ledBlink(LED* led, int period)
+void Led_blink(Led* led, int period)
 {
 	led->state = STATE_BLINKING;
 	led->period = period;
 	led->counter = 0;
 }
 
-void ledOnTimerInterrupt(LED* led)
+void Led_onTimerInterrupt(Led* led)
 {
 	if(led->state == STATE_BLINKING){
 		led->counter++;
@@ -43,9 +42,9 @@ void ledOnTimerInterrupt(LED* led)
 	}
 }
 
-void setBrightness(int brightness)
+void Led_setBrightness(int brightness)
 {
-	if(brightness > 10 )
+	if(brightness > 10 || brightness < 0 )
 	{
 		printf("Invalid command\r\n");
 		return;
@@ -55,5 +54,3 @@ void setBrightness(int brightness)
 	HAL_TIM_Base_Start_IT(&htim4);
 	HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);
 }
-
-void ledOnPeriodicTask(LED* led);

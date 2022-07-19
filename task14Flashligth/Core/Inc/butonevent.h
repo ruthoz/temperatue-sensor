@@ -14,7 +14,7 @@ typedef enum StateButon_
 	FULL_BUTON,
 	HALF_BOTON,
 	DUBLE_BUTON,
-}StateButon;
+}StateButton;
 
 
 #endif /* INC_BUTONEVENT_H_ */

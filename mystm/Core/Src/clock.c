@@ -1,7 +1,7 @@
 
-#include "clock.h"
+#include <Clock.h>
 
-void clockInit(CLOCK* clock)
+void Clock_init(Clock* clock)
 {
 	clock->tick = 0;
 	clock->seconds = 0;
@@ -10,7 +10,7 @@ void clockInit(CLOCK* clock)
 	clock->days = 0;
 }
 
-void clockOnTimerInterrupt(CLOCK* clock)
+void Clock_onTimerInterrupt(Clock* clock)
 {
 	clock->tick++;
 	clock->seconds = clock->tick/1000;

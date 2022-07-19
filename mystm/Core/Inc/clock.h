@@ -6,7 +6,7 @@
 #include "main.h"
 #include <stdint.h>
 
-typedef struct _clock
+typedef struct clock_
 {
 	uint32_t tick;
 	int seconds;
@@ -14,11 +14,9 @@ typedef struct _clock
 	int hours;
 	int days;
 
-}CLOCK;
+}Clock;
 
-void clockInit(CLOCK* clock);
-void clockOnTimerInterrupt(CLOCK* clock);
-
-
+void Clock_init(Clock* clock);
+void Clock_onTimerInterrupt(Clock* clock);
 
 #endif /* INC_CLOCK_H_ */

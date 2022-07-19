@@ -1,10 +1,10 @@
-21:20:11 **** Incremental Build of configuration Debug for project mystm ****
+20:35:27 **** Incremental Build of configuration Debug for project mystm ****
 make -j12 all 
 arm-none-eabi-size   mystm.elf 
    text	   data	    bss	    dec	    hex	filename
-  29340	    312	   2488	  32140	   7d8c	mystm.elf
+  34248	    312	   2624	  37184	   9140	mystm.elf
 Finished building: default.size.stdout
  
 
-21:20:11 Build Finished. 0 errors, 0 warnings. (took 275ms)
+20:35:27 Build Finished. 0 errors, 0 warnings. (took 273ms)
 

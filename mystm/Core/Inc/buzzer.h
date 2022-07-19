@@ -12,20 +12,20 @@ typedef enum StateBuzzer_
 
 }StateBuzzer;
 
-typedef struct _buzzer
+typedef struct buzzer_
 {
 	StateBuzzer state;
 	size_t sizeOfMusic;
 	int currentNote;
 	int counter;
-	int Maxcount;
+	int maxCount;
 
-}BUZZER;
+}Buzzer;
 
-void buzzerInit(BUZZER* buzzer);
-void playNote(BUZZER* buzzer);
-void playNextNote();
-void buzzerOnTimerInterrupt(BUZZER* buzzer);
-
-
+void Buzzer_init(Buzzer* buzzer);
+void Buzzer_playNote(Buzzer* buzzer);
+void Buzzer_playNextNote();
+void Buzzer_onTimerInterrupt(Buzzer* buzzer);
+void Buzzer_on(Buzzer* buzzer);
+void Buzzer_off(Buzzer* buzzer);
 #endif /* INC_BUZZER_H_ */

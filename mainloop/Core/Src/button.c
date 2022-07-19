@@ -2,10 +2,10 @@
 #include "main.h"
 #include "led.h"
 
-extern LED ledR;
-extern LED ledB;
+extern Led ledR;
+extern Led ledB;
 
-void buttonInit(BUTTON* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
+void Button_init(Button* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
 	button->state = BUTTON_UP;
 	button->timetick = 0 ;
@@ -14,18 +14,18 @@ void buttonInit(BUTTON* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 }
 
 
-void buttonInterrupt(BUTTON* button)
+void Button_interrupt(Button* button)
 {
 	if(button->state == BUTTON_DOWN)
 	{
 		button->state = BUTTON_UP;
 		if(HAL_GetTick()- button->timetick <= 500)
 		{
-			ledOff(&ledB);
+			Led_off(&ledB);
 		}
 		else
 		{
-			 ledBlink( &ledB, 300);
+			 Led_blink( &ledB, 300);
 		}
 
 	}

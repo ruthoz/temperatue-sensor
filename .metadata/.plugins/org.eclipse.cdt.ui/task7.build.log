@@ -1,4 +1,4 @@
-18:53:15 **** Build of configuration Debug for project task7 ****
+18:28:30 **** Build of configuration Debug for project task7 ****
 make -j12 all 
 arm-none-eabi-size   task7.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   task7.elf
 Finished building: default.size.stdout
  
 
-18:53:16 Build Finished. 0 errors, 0 warnings. (took 236ms)
+18:28:30 Build Finished. 0 errors, 0 warnings. (took 282ms)
 

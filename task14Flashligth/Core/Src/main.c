@@ -74,7 +74,7 @@ int _write(int fd, char* ptr, int len)
 }
 //////////////////////////////////////////////////////////////////////
 
-StateButon stateB1 = NO_BUTON;
+StateButton stateB1 = NO_BUTON;
 uint16_t TickOnB1 = 0;
 uint16_t TickOffB1 = 0;
 uint16_t DelayTick = 0;
@@ -162,7 +162,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 int brightCunt = 0 ;
 int brightLevel  ;
 
-void setBrightness(int brightness)
+void Led_setBrightness(int brightness)
 {
 	if(brightness > 10 )
 	{
@@ -189,7 +189,7 @@ uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
 int cmdcount = 0;
 int cmdprint = 0;
 
-int commTask()
+int Communication_commTask()
 {
 	uint8_t ch;
 
@@ -238,7 +238,7 @@ int commTask()
 	return 1;
 }
 
-void handleCommand()
+void Communication_handleCommand()
 {
   char cmd[20];
   int brightness;
@@ -260,7 +260,7 @@ void handleCommand()
   }
   else if (strcmp(cmd, "bright") == 0)
   {
-	  setBrightness(brightness);
+	  Led_setBrightness(brightness);
   }
 
 

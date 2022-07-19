@@ -48,9 +48,9 @@ TIM_HandleTypeDef htim6;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-LED ledR;
-LED ledB;
-BUTTON button1;
+Led ledR;
+Led ledB;
+Button button1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -76,30 +76,30 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 {
 	if(htim == &htim6)
 	{
-	  ledOnTimerInterrupt(&ledB);
+	  Led_onTimerInterrupt(&ledB);
 	}
 	else
 	{
-	  ledOn(&ledR);
+	  Led_on(&ledR);
 	}
 
 }
 /////////////////////////////////////////////////////////////////////
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	buttonInterrupt(&button1);
+	Button_interrupt(&button1);
 }
 ////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 {
-	ledOff(&ledR);
+	Led_off(&ledR);
 }
 
 /////////////////////////////////////////////////////////////////////
 
-void setBrightness(int brightness)
+void Led_setBrightness(int brightness)
 {
 	if(brightness > 10 )
 	{
@@ -123,7 +123,7 @@ uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
 int cmdcount = 0;
 int cmdprint = 0;
 
-int commTask()
+int Communication_commTask()
 {
 	uint8_t ch;
 
@@ -172,7 +172,7 @@ int commTask()
 	return 1;
 }
 
-void handleCommand()
+void Communication_handleCommand()
 {
   char cmd[20];
   int brightness;
@@ -187,16 +187,16 @@ void handleCommand()
   if (strcmp(cmd, "off") == 0)
   {
 	  HAL_TIM_PWM_Stop_IT(&htim4, TIM_CHANNEL_1);
-	  ledOff(&ledR);
+	  Led_off(&ledR);
   }
   else if (strcmp(cmd, "on") == 0)
   {
 	  HAL_TIM_PWM_Stop_IT(&htim4, TIM_CHANNEL_1);
-	  ledOn(&ledR);
+	  Led_on(&ledR);
   }
   else if (strcmp(cmd, "bright") == 0)
   {
-	  setBrightness(brightness);
+	  Led_setBrightness(brightness);
   }
 
 
@@ -242,9 +242,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   __HAL_TIM_SET_COUNTER(&htim6, 0);
   HAL_TIM_Base_Start_IT(&htim6);
-  ledInit(&ledB , LD2_GPIO_Port , LD2_Pin );
-  ledInit(&ledR , LD3_GPIO_Port , LD3_Pin );
-  buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
+  Led_init(&ledB , LD2_GPIO_Port , LD2_Pin );
+  Led_init(&ledR , LD3_GPIO_Port , LD3_Pin );
+  Button_init(&button1, B2_GPIO_Port ,  B2_Pin);
 
   /* USER CODE END 2 */
 
@@ -253,9 +253,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if (commTask())
+	  if (Communication_commTask())
 	  	  {
-	  		  handleCommand();
+	  		  Communication_handleCommand();
 	  	  }
     /* USER CODE BEGIN 3 */
 

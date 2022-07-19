@@ -15,24 +15,24 @@ typedef enum LEDstate_
 	STATE_OFF,
 	STATE_ON,
 	STATE_BLINKING,
-}LED_STATE;
+}LedState;
 
 typedef struct _led
 {
-	LED_STATE state;
+	LedState state;
 	int counter;
 	GPIO_TypeDef* GPIOx;
 	uint16_t GPIO_Pin;
 	int period;
 
-}LED;
+}Led;
 
-void ledInit(LED* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
-void ledOn(LED* led);
-void ledOff(LED* led);
-void ledBlink(LED* led, int period);
-void ledOnTimerInterrupt(LED* led);
-void ledOnPeriodicTask(LED* led);
+void Led_init(Led* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
+void Led_on(Led* led);
+void Led_off(Led* led);
+void Led_blink(Led* led, int period);
+void Led_onTimerInterrupt(Led* led);
+void Led_onPeriodicTask(Led* led);
 
 
 #endif /* INC_LED_H_ */
