@@ -1,0 +1,43 @@
+#include "CLI.h"
+#include "led.h"
+#include "commTask.h"
+#include "buzzer.h"
+
+extern LED ledR;
+extern LED ledB;
+extern BUZZER buzzer;
+
+void cmdLedOn(void* obj, char* param){
+	LED *led = (LED*)obg;
+	ledOn(led);
+}
+
+void cmdLedOff(void* obj, char* param){
+	LED *led = (LED*)obg;
+	ledOff(led);
+}
+
+void cmdBuzzerOn(void* obj, char* param){
+	BUZZER *buzzer = (BUZZER*)obg;
+	buzzerOn(buzzer);
+}
+
+void cmdBuzzerOff(void* obj, char* param){
+	BUZZER *buzzer = (BUZZER*)obg;
+	buzzerOff(buzzer);
+}
+
+
+void cliInit(){
+	RegisterCommand("ledR", "on", cmdLedOn, &ledR);
+	RegisterCommand("ledR", "off", cmdLedOff, &ledR);
+	RegisterCommand("ledB", "on", cmdLedOn, &ledB);
+    RegisterCommand("ledB", "off", cmdLedOff, &ledB);
+    RegisterCommand("buzzer", "on", cmdBuzzerOn, &buzzer);
+    RegisterCommand("buzzer", "off", cmdBuzzerOff, &buzzer);
+}
+
+void cmdLed(void* obj){
+
+}
+

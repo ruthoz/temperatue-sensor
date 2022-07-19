@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;task20RTC/Core/Inc/calender.h&apos; to &apos;calendar.h&apos;" description="Rename resource &apos;calender.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/calender.h" name="calendar.h" stamp="1656608776770" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;task20RTC/Core/Src/calender.c&apos; to &apos;calendar.c&apos;" description="Rename resource &apos;calender.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/calender.c" name="calendar.c" stamp="1656608784470" updateReferences="true"/>
+</session>

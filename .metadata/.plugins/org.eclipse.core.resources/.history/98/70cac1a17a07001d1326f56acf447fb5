@@ -1,0 +1,105 @@
+#include "DHT11.h"
+#include <stdio.h>
+
+extern TIM_HandleTypeDef htim16;
+
+GPIO_InitTypeDef GPIO_InitStruct = {0};
+uint32_t buffDht11 [5];
+uint8_t oneBit = 0;
+uint8_t prevOneBit = 0;
+
+
+void DHT11_InitOutput()
+{
+	GPIO_InitStruct.Pin = D4_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(D4_GPIO_Port, &GPIO_InitStruct);
+}
+
+void DHT11_InitInput()
+{
+	GPIO_InitStruct.Pin = D4_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(D4_GPIO_Port, &GPIO_InitStruct);
+}
+
+void DHT11_whrithPin()
+{
+	HAL_TIM_Base_Start(&htim16);
+	DHT11_InitOutput();
+	__HAL_TIM_SET_COUNTER(&htim16 , 0);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, 0);
+	while (__HAL_TIM_GET_COUNTER(&htim16) < 18000){
+
+	}
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, 1);
+	__HAL_TIM_SET_COUNTER(&htim16 , 0);
+
+	DHT11_getStatus();
+}
+
+void DHT11_getStatus(){
+	DHT11_InitInput();
+	while (HAL_GPIO_ReadPin(D4_GPIO_Port, D4_Pin) == 1){
+		if(__HAL_TIM_GET_COUNTER(&htim16) > 60){
+				return;
+		}
+	}
+	__HAL_TIM_SET_COUNTER(&htim16 , 0);
+	while (HAL_GPIO_ReadPin(D4_GPIO_Port, D4_Pin) == 0){
+		if(__HAL_TIM_GET_COUNTER(&htim16) > 100){
+		    return;
+		}
+    }
+	__HAL_TIM_SET_COUNTER(&htim16 , 0);
+	while (HAL_GPIO_ReadPin(D4_GPIO_Port, D4_Pin) == 1){
+			if(__HAL_TIM_GET_COUNTER(&htim16) > 100){
+			    return;
+			}
+	}
+    DHT11_waitForSignal();
+
+}
+
+void DHT11_waitForSignal(){
+	for(int x=0; x<5; x++){
+		for(int i=7; i>=0; i--){
+			while (HAL_GPIO_ReadPin(D4_GPIO_Port, D4_Pin) == 0){
+
+			}
+			DHT11_readNextBit(i);
+			buffDht11 [x] = prevOneBit;
+		}
+	}
+	DHT11_printBuff();
+}
+
+void DHT11_readNextBit(int i)
+{
+	__HAL_TIM_SET_COUNTER(&htim16 , 0);
+	while (HAL_GPIO_ReadPin(D4_GPIO_Port, D4_Pin) == 1){
+
+	}
+
+	if(__HAL_TIM_GET_COUNTER(&htim16)<30){
+		oneBit= 0;
+	}
+	else if (__HAL_TIM_GET_COUNTER(&htim16)>70){
+		oneBit= 1;
+
+		prevOneBit = (oneBit << i) | prevOneBit;
+	}
+
+}
+
+void DHT11_printBuff()
+{
+	for (int j=0; j< 5 ; j++){
+		printf (" %lu",buffDht11[j]);
+	}
+}
+

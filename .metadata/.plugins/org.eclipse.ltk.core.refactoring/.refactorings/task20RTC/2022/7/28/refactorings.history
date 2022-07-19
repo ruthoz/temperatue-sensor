@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;task20RTC/Core/Inc/handleCommand.c&apos; to &apos;handleCommand.h&apos;" description="Rename resource &apos;handleCommand.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/handleCommand.c" name="handleCommand.h" stamp="1656867474847" updateReferences="true"/>
+</session>

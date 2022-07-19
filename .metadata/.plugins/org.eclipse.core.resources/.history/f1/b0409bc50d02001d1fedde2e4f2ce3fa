@@ -1,0 +1,20 @@
+#include "CLI.h"
+#include "led.h"
+#include "commTask.h"
+
+extern LED ledR;
+static HandlerFunc _on;
+static HandlerFunc _off;
+static void* _obj;
+
+
+
+void cliInt(){
+	RegisterCommand("led", "on", led on, &ledR);
+	RegisterCommand("led", "off", led off, &ledR);
+}
+
+void cmdLed(void* obj, ){
+
+}
+

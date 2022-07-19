@@ -1,0 +1,16 @@
+#include "CLI.h"
+#include "led.h"
+#include "commTask.h"
+
+extern LED ledR;
+
+
+void cliInit(){
+	RegisterCommand("led", "on", ledon, &ledR);
+	RegisterCommand("led", "off", ledoff, &ledR);
+}
+
+void cmdLed(void* obj){
+
+}
+
