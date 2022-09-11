@@ -1,0 +1,25 @@
+#include "Flash.h"
+
+static char data[256]= "hello world";
+FLASH_EraseInitTypeDef basicFlash;
+
+void Flash_init(Flash* flash)
+{
+	flash->flashState=FLASH_STATE_NONE;
+	flash->writeCnt=0;
+	flash->dataIndex=0;
+}
+
+Flash_erase(Flash* flash)
+{
+	flash->flashState = FLASH_STATE_ERASE;
+
+	basicFlash.TypeErase = FLASH_TYPEPROGRAM_DOUBLEWORD;
+	basicFlash.Banks = FLASH_BANK_2;
+	basicFlash.Page = 256;
+	basicFlash.NbPages = 1;
+
+	HAL_FLASH_Unlock();
+
+	HAL_FLASHEx_Erase_IT(*basicFlash);
+}

@@ -1,0 +1,58 @@
+/*
+ * MainTimer.c
+ *
+ *  Created on: 31 Jul 2022
+ *      Author: student
+ */
+#include "MainTimer.h"
+#include <string.h>
+
+static MainTimerIT MainTimer[20];
+static int lastObject = 0;
+
+void MainTimer_Init(){
+	memset(MainTimer, 0 , sizeof(MainTimer));
+
+}
+
+void MainTimer_registerCallback(TimerHandler timerHendler, void* object)
+{
+	MainTimer[lastObject].timerHendler = timerHendler;
+	MainTimer[lastObject].object = object;
+	lastObject ++;
+}
+
+void MainTimer_unRegisterCallback(TimerHandler timerHendler, void* object)
+{
+	int i=0;
+	while (MainTimer[i].timerHendler != timerHendler){
+		i++;
+	}
+
+	MainTimer[i].timerHendler = MainTimer[lastObject].timerHendler;
+	MainTimer[i].object = MainTimer[lastObject].object;
+
+	MainTimer[lastObject].timerHendler = NULL;
+	MainTimer[lastObject].object = NULL;
+
+	lastObject--;
+	printf("good");
+}
+
+void MainTimer_onTimerInterrupt()
+{
+	int i=0;
+	while (MainTimer[i].timerHendler != NULL){
+		MainTimer[i].timerHendler (MainTimer[i].object);
+		i++;
+	}
+}
+
+
+
+
+
+
+
+
+

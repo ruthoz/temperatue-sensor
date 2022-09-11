@@ -5,28 +5,44 @@
 #include "main.h"
 #include <stdint.h>
 
-typedef enum StateDht11_
+typedef enum _Dht11State
 {
-	OUTPUT,
-	INPUTT,
-}StateDht11;
+	STATE_SLEEP,
+	STATE_WAKEUP_START,
+	STATE_WAKEUP_END,
+	STATE_WAITING_RESPONSE_START,
+	STATE_WAITING_RESPONSE_END,
+	STATE_RECIVING_BIT,
+	STATE_HAS_DATA,
+}Dht11State;
 
 typedef struct _Dht11
 {
-	GPIO_TypeDef* GPIOx;
-	uint16_t GPIO_Pin;
+	Dht11State DhtState;
+	GPIO_TypeDef * gpioPort;
+	uint16_t gpioPin;
+	uint8_t DhtBuffer[5];
 	double temperature;
 	double humidity;
 	int checkSum;
+	int bitCount;
+	int msCount;
 }Dht11;
 
-void DHT11_init(Dht11* dht);
-void DHT11_setOutput(Dht11* dht);
-void DHT11_setInput(Dht11* dht);
-void DHT11_whrithPin(Dht11* dht);
-void DHT11_getStatus(Dht11* dht);
-void DHT11_waitForSignal(Dht11* dht);
-int DHT11_readNextBit(Dht11* dht);
-void DHT11_printBuff(Dht11* dht);
+void Dht11_init(Dht11 * dht);
+void Dht11_start(Dht11 * dht);
+void Dht11_startRead(Dht11 * dht);
+void Dht11_onGpioInterrupt(Dht11 * dht, uint16_t pin);
+int Dht11_returnedValue(Dht11 * dht);
+void Dht11_hasData(Dht11 * dht);
+void Dht11_onTimerInterrupt(Dht11 * dht);
+void Dht11_print(Dht11 * dht);
+void Dht11_setGpioExti(Dht11 * dht);
+
+
+void Dht11_reciveData(Dht11 * dht);
+void Dht11_setInput(Dht11 * dht);
+void Dht11_setGpioOutput(Dht11 * dht);
+void waitTime(Dht11 * dht, int pinState, int timeOut);
 
 #endif /* INC_DHT11_H_ */

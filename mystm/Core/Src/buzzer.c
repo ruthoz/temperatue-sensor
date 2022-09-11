@@ -1,4 +1,5 @@
 #include <Buzzer.h>
+#include "MainTimer.h"
 
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim3;
@@ -33,8 +34,9 @@ void Buzzer_playNextNote(Buzzer* buzzer)
 	Buzzer_playNote(buzzer);
 }
 
-void Buzzer_onTimerInterrupt(Buzzer* buzzer)
+void Buzzer_onTimerInterrupt(void* obj)
 {
+	Buzzer * buzzer = (Buzzer*)obj;
 	if(buzzer->state == MUSIC_ON){
 		buzzer->counter++;
 		if(buzzer->counter >= buzzer->maxCount){
@@ -46,6 +48,7 @@ void Buzzer_onTimerInterrupt(Buzzer* buzzer)
 }
 
 void Buzzer_on(Buzzer* buzzer){
+	MainTimer_registerCallback(Buzzer_onTimerInterrupt , buzzer);
 	buzzer->state = MUSIC_ON;
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
@@ -53,6 +56,7 @@ void Buzzer_on(Buzzer* buzzer){
 }
 
 void Buzzer_off(Buzzer* buzzer){
+	MainTimer_unRegisterCallback(Buzzer_onTimerInterrupt , buzzer);
 	buzzer->state = MUSIC_OFF;
 	HAL_TIM_Base_Stop_IT(&htim3);
 	HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);

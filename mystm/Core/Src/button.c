@@ -40,12 +40,14 @@ void Button_interrupt(Button* button)
 	     }
 	     else{
 		   button->state = BUTTON_STATE;
+		   //MainTimer_registerCallback(Button_onTimerInterrupt , button);
 	     }
 	}
 }
 
-void Button_onTimerInterrupt(Button* button)
+void Button_onTimerInterrupt(void* obj)
 {
+	Button* button = (Button *)obj;
 	if (button->state == BUTTON_STATE) {
 		counter++;
 		if(counter > 200 ){

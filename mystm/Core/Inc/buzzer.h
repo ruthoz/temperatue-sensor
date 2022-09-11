@@ -25,7 +25,7 @@ typedef struct buzzer_
 void Buzzer_init(Buzzer* buzzer);
 void Buzzer_playNote(Buzzer* buzzer);
 void Buzzer_playNextNote();
-void Buzzer_onTimerInterrupt(Buzzer* buzzer);
+void Buzzer_onTimerInterrupt(void* obj);
 void Buzzer_on(Buzzer* buzzer);
 void Buzzer_off(Buzzer* buzzer);
 #endif /* INC_BUZZER_H_ */

@@ -1,12 +1,14 @@
 #include <Buzzer.h>
 #include <Communication.h>
 #include <Led.h>
+#include "Flash.h"
 #include "CLI.h"
 #include <stdlib.h>
 
 extern Led ledR;
 extern Led ledB;
 extern Buzzer buzzer;
+extern Flash flash;
 
 void Cli_cmdLedOn(void* obj, char* param){
 	Led *led = (Led*)obj;
@@ -40,6 +42,12 @@ void Cli_cmdBuzzerOff(void* obj, char* param){
 	Buzzer_off(buzzer);
 }
 
+void Cli_cmdFlashOn(void* obj, char* param){
+	Flash *flash = (Flash*)obj;
+	Flash_erase(flash);
+}
+
+
 
 void Cli_init(){
 	//////////////////ledR//////////////////////////////
@@ -58,6 +66,9 @@ void Cli_init(){
     /////////////////buzzer//////////////////////////////
     Communication_registerCommand("buzzer", "on", Cli_cmdBuzzerOn, &buzzer);
     Communication_registerCommand("buzzer", "off", Cli_cmdBuzzerOff, &buzzer);
+
+    ///////////////flash////////////////////////////////
+    Communication_registerCommand("flash", "on", Cli_cmdFlashOn, &flash);
 }
 
 

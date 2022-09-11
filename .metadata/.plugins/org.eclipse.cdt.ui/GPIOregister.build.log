@@ -1,0 +1,10 @@
+19:18:05 **** Incremental Build of configuration Debug for project GPIOregister ****
+make -j12 all 
+arm-none-eabi-size   GPIOregister.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17336	    132	   1724	  19192	   4af8	GPIOregister.elf
+Finished building: default.size.stdout
+ 
+
+19:18:06 Build Finished. 0 errors, 0 warnings. (took 288ms)
+

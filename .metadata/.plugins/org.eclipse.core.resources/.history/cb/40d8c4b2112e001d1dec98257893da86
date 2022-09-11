@@ -1,0 +1,75 @@
+#include "Flash.h"
+#include <stdio.h>
+//static char data[256]= "hello world";
+FLASH_EraseInitTypeDef basicFlash;
+
+void Flash_init(Flash* flash)
+{
+	flash->flashState=FLASH_STATE_NONE;
+	flash->pageOfSet=0;
+	flash->dataIndex=0;
+	Flash_freeWrith(flash);
+}
+
+void Flash_erase(Flash* flash)
+{
+	flash->flashState = FLASH_STATE_ERASE;
+
+	basicFlash.TypeErase = FLASH_TYPEERASE_PAGES;
+	basicFlash.Banks = FLASH_BANK_2;
+	basicFlash.Page = flash->page;
+	basicFlash.NbPages = 1;
+
+	HAL_FLASH_Unlock();
+
+	flash->flashState = FLASH_STATE_WRITE;
+	HAL_FLASHEx_Erase_IT(&basicFlash);
+}
+
+void Flash_writh(Flash* flash, uint32_t flashAdd, void* data, uint32_t dataSize)
+{
+	flash->pageOfSet +=8;
+	if(flash->pageOfSet >= 4096){
+		flash->page = 256;
+		flash->flashAdd = 0x08080000;
+	}
+
+	HAL_FLASH_Program_IT(FLASH_TYPEPROGRAM_DOUBLEWORD, flashAdd + flash->dataIndex , *(uint64_t*)(data + flash->dataIndex));
+	flash->dataIndex +=8;
+
+	if(flash->pageOfSet >=2048){
+		flash->page = 257;
+		flash->flashAdd = 0x08080800;
+	}
+
+	if((flash->dataIndex)>=dataSize){
+		flash->flashState = FLASH_STATE_NONE;
+		flash->dataIndex = 0;
+
+		HAL_FLASH_Lock();
+
+		printf("%s\n\r", (char*)(flashAdd));
+	}
+}
+
+void Flash_freeWrith(Flash* flash)
+{
+	for(int j=0; j<4096 ; j+=8){
+		uint64_t * readData = (uint64_t *)(0x08080000+j);
+		uint64_t value = *readData;
+		if(value== 0xFFFFFFFF){
+			if((j / 2048) == 0){
+				flash->page = 256;
+			}
+			else{
+				flash->page = 257;
+			}
+			flash->flashAdd = (0x08080000+j);
+			flash->pageOfSet = j;
+			break;
+		}
+    }
+	flash->page = 256;
+	flash->flashAdd = 0x08080000;
+}
+

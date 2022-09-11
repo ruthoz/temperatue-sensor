@@ -32,7 +32,7 @@ typedef struct _Button
 
 void Button_init(Button* button , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin);
 void Button_interrupt(Button* button);
-void Button_onTimerInterrupt (Button* button);
+void Button_onTimerInterrupt (void* obj);
 StateButton Button_checkState(Button* button);
 
 #endif /* INC_BUTTON_H_ */

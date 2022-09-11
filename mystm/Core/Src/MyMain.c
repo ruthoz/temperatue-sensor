@@ -6,6 +6,8 @@
 #include "MyMain.h"
 #include "CLI.h"
 #include "DHT11.h"
+#include "MainTimer.h"
+#include "Flash.h"
 #include <stdio.h>
 
 extern TIM_HandleTypeDef htim6;
@@ -17,8 +19,8 @@ Led ledB;
 Button button1;
 Buzzer buzzer;
 Clock clock1;
-Dht11 dht;
-
+Dht11 TempHum;
+Flash flash;
 //////////////////////////////////////////////////////////////
 int _write(int fd, char* ptr, int len)
 {
@@ -30,26 +32,47 @@ int _write(int fd, char* ptr, int len)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 {
 	if(htim == &htim6){
-
+		MainTimer_onTimerInterrupt();
     ////////////////led////////////////////////////////////
-		Led_onTimerInterrupt(&ledB);
-		Led_onTimerInterrupt(&ledR);
+	//	Led_onTimerInterrupt(&ledB);
+	//	Led_onTimerInterrupt(&ledR);
 
 	//////////////clock///////////////////////////////////
-		Clock_onTimerInterrupt(&clock1);
+	//	Clock_onTimerInterrupt(&clock1);
 
 	/////////////buzzer//////////////////////////////////
-		Buzzer_onTimerInterrupt(&buzzer);
+	//	Buzzer_onTimerInterrupt(&buzzer);
 
 	///////////button///////////////////////////////////
 		Button_onTimerInterrupt(&button1);
 
+		////////////Dht11//////////////////////////
+	//Dht11_onTimerInterrupt(&TempHum);
+
+		//////////////////////////////////////////
+		flash_onTimerInterrupt(&flash);
+
 	}
+
 }
+
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+	if(GPIO_Pin == TempHum.gpioPin){
+		Dht11_onGpioInterrupt(&TempHum, TempHum.gpioPin);
+	}
+
 	Button_interrupt(&button1);
+}
+
+static char data[256]= "hello world";
+void MyFlashInterruptHandler()
+{
+	if(flash.flashState==FLASH_STATE_ERASE){
+		flash.flashState = FLASH_STATE_WRITE;
+		Flash_writh(&flash, flash.flashAdd, data ,sizeof data );
+	}
 }
 
 
@@ -57,16 +80,19 @@ void mainloop()
 {
 	HAL_TIM_Base_Start_IT(&htim6);
 
+	MainTimer_Init();
 	Led_init(&ledB , LD2_GPIO_Port , LD2_Pin );
 	Led_init(&ledR , LD3_GPIO_Port , LD3_Pin );
 	Buzzer_init(&buzzer);
 	Clock_init(&clock1);
 	Button_init(&button1, B2_GPIO_Port ,  B2_Pin);
+	Flash_init(&flash);
 	Cli_init();
-	DHT11_init(&dht);
-	DHT11_whrithPin(&dht);
+	Dht11_init(&TempHum);
+
 
 	while(1){
+		Dht11_hasData(&TempHum);
 		if (Communication_commTask()){
 			Communication_handleCommand();
 		}

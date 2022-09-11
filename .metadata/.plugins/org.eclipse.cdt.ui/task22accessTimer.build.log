@@ -1,4 +1,4 @@
-18:28:28 **** Build of configuration Debug for project task22accessTimer ****
+20:40:48 **** Incremental Build of configuration Debug for project task22accessTimer ****
 make -j12 all 
 arm-none-eabi-size   task22accessTimer.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   task22accessTimer.elf
 Finished building: default.size.stdout
  
 
-18:28:28 Build Finished. 0 errors, 0 warnings. (took 277ms)
+20:40:48 Build Finished. 0 errors, 0 warnings. (took 226ms)
 

@@ -1,0 +1,42 @@
+#include "Flash.h"
+#include <stdio.h>
+static char data[256]= "hello world";
+FLASH_EraseInitTypeDef basicFlash;
+
+void Flash_init(Flash* flash)
+{
+	flash->flashState=FLASH_STATE_NONE;
+	flash->writeCnt=0;
+	flash->dataIndex=0;
+}
+
+void Flash_erase(Flash* flash)
+{
+	flash->flashState = FLASH_STATE_ERASE;
+
+	basicFlash.TypeErase = FLASH_TYPEERASE_PAGES;
+	basicFlash.Banks = FLASH_BANK_2;
+	basicFlash.Page = 256;
+	basicFlash.NbPages = 1;
+
+	HAL_FLASH_Unlock();
+
+	flash->flashState = FLASH_STATE_WRITE;
+	HAL_FLASHEx_Erase_IT(&basicFlash);
+}
+
+void Flash_writh(Flash* flash)
+{
+	flash->writeCnt++;
+	HAL_FLASH_Program_IT(FLASH_TYPEPROGRAM_DOUBLEWORD, 0x08080000 + flash->dataIndex , *(uint32_t*)(data + flash->dataIndex));
+	flash->dataIndex +=8;
+
+	if((flash->dataIndex)>=256){
+		flash->flashState = FLASH_STATE_NONE;
+		flash->dataIndex = 0;
+
+		HAL_FLASH_Lock();
+
+		printf("%s\n\r", *(char*)(0x08080000));
+	}
+}
