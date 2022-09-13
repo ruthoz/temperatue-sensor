@@ -52,6 +52,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 		//////////////////////////////////////////
 		flash_onTimerInterrupt(&flash);
 
+
 	}
 
 }
@@ -66,12 +67,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	Button_interrupt(&button1);
 }
 
-static char data[256]= "hello world";
+
 void MyFlashInterruptHandler()
 {
+	if(flash.flashState==FLASH_STATE_WRITE){
+		flash.flashState=FLASH_STATE_NONE;
+	}
 	if(flash.flashState==FLASH_STATE_ERASE){
-		flash.flashState = FLASH_STATE_WRITE;
-		Flash_writh(&flash, flash.flashAdd, data ,sizeof data );
+		flash.flashState=FLASH_STATE_WRITE;
 	}
 }
 

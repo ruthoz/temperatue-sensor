@@ -10,6 +10,7 @@ void Flash_init(Flash* flash)
 {
 	flash->flashState=FLASH_STATE_NONE;
 	flash->dataIndex=0;
+	flash->flashAdd = page256Add;
 	Flash_freeWrith(flash);
 }
 
@@ -24,20 +25,27 @@ void Flash_erase(Flash* flash)
 
 	HAL_FLASH_Unlock();
 
-	//flash->flashState = FLASH_STATE_WRITE;
 	HAL_FLASHEx_Erase_IT(&basicFlash);
 }
 
 void Flash_writh(Flash* flash, uint32_t flashAdd, void* data, uint32_t dataSize)
 {
-	while(flash->flashState != FLASH_STATE_WRITE){
-
+	if(flash->flashState==FLASH_STATE_ERASE){
+		return;
 	}
-	///////////page 257 full//////////
+
+	///////////if page 257 full//////////
 	if(flash->pageOfSet >= 4096){
 		flash->page = 256;
-		flash->flashAdd = page256Add;
+		//flash->flashAdd = page256Add;
 		flash->pageOfSet = 0;
+		Flash_erase(flash);
+
+	}
+	/////////// if page 256 full//////////
+	if(flash->pageOfSet >=2048){
+		flash->page = 257;
+		//flash->flashAdd = page256Add;
 		Flash_erase(flash);
 	}
 
@@ -45,12 +53,7 @@ void Flash_writh(Flash* flash, uint32_t flashAdd, void* data, uint32_t dataSize)
 	flash->pageOfSet +=8;
 	flash->dataIndex +=8;
 
-	///////////page 256 full//////////
-	if(flash->pageOfSet >=2048){
-		flash->page = 257;
-		flash->flashAdd = page256Add;
-		Flash_erase(flash);
-	}
+
 	///////////data over full//////////
 	if((flash->dataIndex)>=dataSize){
 		//flash->flashState = FLASH_STATE_NONE;
@@ -58,7 +61,7 @@ void Flash_writh(Flash* flash, uint32_t flashAdd, void* data, uint32_t dataSize)
 
 		//HAL_FLASH_Lock();
 
-		//printf("%s\r", (char*)(flashAdd));
+		//printf("%s\n\r", (char*)(flashAdd));
 		if(flash->pageOfSet <=2048){
 			printf("page 256\n\r");
 		}
@@ -72,26 +75,28 @@ void Flash_writh(Flash* flash, uint32_t flashAdd, void* data, uint32_t dataSize)
 void Flash_freeWrith(Flash* flash)
 {
 	for(int j=0; j<PAGE_SIZE*2 ; j+=8){
-		uint64_t * readData = (uint64_t *)(page256Add+j);
-		uint64_t value = *readData;
-		if(value== 0xFFFFFFFF){
+		uint32_t * readData = (uint32_t *)(page256Add+j);
+		uint32_t value = *readData;
+		if(value == 0xFFFFFFFFULL){
 			if((j / PAGE_SIZE) == 0){
 				flash->page = 256;
 			}
 			else{
 				flash->page = 257;
 			}
-			flash->flashAdd = (page256Add+j);
+			//flash->flashAdd = (page256Add+j);
 			flash->pageOfSet = j;
-			break;
+			return;
 		}
+
     }
 	flash->page = 256;
-	flash->flashAdd = page256Add;
+	//flash->flashAdd = page256Add;
 	flash->pageOfSet = 0;
 }
 
+static char data[256]= "hello world";
 void flash_onTimerInterrupt(Flash* flash){
-	Flash_erase(flash);
+	Flash_writh(flash, flash->flashAdd, data ,sizeof(data) );
 }
 
