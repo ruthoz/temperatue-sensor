@@ -6,10 +6,12 @@
  */
 
 #include <HandleCommand.h>
+#include "Led.h"
 #include <stdio.h>
 #include <string.h>
 
-
+extern Led ledR;
+extern Led ledB;
 extern UART_HandleTypeDef huart2;
 #define MAX_BUFFER_LENGTH 100
 static uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
@@ -85,8 +87,11 @@ void Communication_handleCommand()
 	   return;
    }
 
-   if (strcmp(cmd, "blink") == 0){
-
+   if (strcmp(cmd, "redBlink") == 0){
+	   setBlinkLed(&ledR,param);
+   }
+   if (strcmp(cmd, "blueBlink") == 0){
+	   setBlinkLed(&ledB , param);
    }
    else{
    	  printf("Invalid command\r\n");
