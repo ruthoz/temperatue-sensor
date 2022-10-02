@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;FreeRTOS-MutualExclution/Core/Src/task.c&apos; to &apos;task44.c&apos;" description="Rename resource &apos;task.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/task.c" name="task44.c" stamp="1664733111760" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;FreeRTOS-MutualExclution/Core/Inc/task.h&apos; to &apos;task44.h&apos;" description="Rename resource &apos;task.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Inc/task.h" name="task44.h" stamp="1664733123820" updateReferences="true"/>
+</session>

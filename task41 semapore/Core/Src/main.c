@@ -61,7 +61,7 @@ osThreadId_t DhtTaskHandle;
 const osThreadAttr_t DhtTask_attributes = {
   .name = "DhtTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for delayTask */
 osThreadId_t delayTaskHandle;

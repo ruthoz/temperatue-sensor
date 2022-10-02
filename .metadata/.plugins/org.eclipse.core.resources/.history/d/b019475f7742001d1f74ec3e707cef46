@@ -1,0 +1,64 @@
+#include "task.h"
+#include <stdio.h>
+#include <string.h>
+#include "cmsis_os.h"
+#include "main.h"
+
+#define USE_CRIT_SEC
+//#define USE_MUTEX
+
+extern osMutexId_t myMutex01Handle;
+static int GlobalFlag = 1;
+
+void printTask(char* name)
+{
+	printf("Hi! My name is %s!\r\n\n",name);
+}
+
+
+
+/* USER CODE END Header_entry_Task01 */
+void entry_Task(void *argument)
+{
+  /* USER CODE BEGIN entry_Task01 */
+
+	PrintTask * task = (PrintTask*)argument;
+
+  /* Infinite loop */
+  for(;;)
+  {
+#ifdef USE_MUTEX
+	  osMutexAcquire(myMutex01Handle, osWaitForever);
+#endif
+
+#ifdef USE_CRIT_SEC
+	  while (1){
+		  __disable_irq();
+		  if(GlobalFlag==1){
+		  GlobalFlag=0;
+		  }
+		  __enable_irq();
+#endif
+
+		  for(int i = 0; i < 3; i++){
+			  printTask(task->name);
+		  	  osDelay(task->delay);
+		  }
+
+#ifdef USE_CRIT_SEC
+		  __disable_irq();
+		  GlobalFlag=1;
+		  __enable_irq();
+	  }
+#endif
+
+#ifdef USE_MUTEX
+	  osMutexRelease(myMutex01Handle);
+#endif
+
+	  osDelay(1);
+  }
+  /* USER CODE END entry_Task01 */
+}
+
+

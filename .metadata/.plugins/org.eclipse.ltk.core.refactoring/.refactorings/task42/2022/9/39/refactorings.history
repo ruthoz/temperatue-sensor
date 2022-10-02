@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;task42/task41 semapore.ioc&apos; to &apos;task42.ioc&apos;" description="Rename resource &apos;task41 semapore.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="task41 semapore.ioc" name="task42.ioc" stamp="1663856116509" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;task42/task41 semapore.launch&apos; to &apos;task42.launch&apos;" description="Rename resource &apos;task41 semapore.launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="task41 semapore.launch" name="task42.launch" stamp="1663856142211" updateReferences="true"/>
+</session>

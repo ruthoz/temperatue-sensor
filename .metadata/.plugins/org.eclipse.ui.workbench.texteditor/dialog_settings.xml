@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="blinkTask"/>
+		<item key="selection" value="printDhtEventHandle"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="printDhtEventHandle"/>
 			<item value="blinkTask"/>
 			<item value="DMA"/>
 			<item value="40,41,42,43,44,45,56,47,48,49,"/>
@@ -22,7 +23,6 @@
 			<item value="GPIO_T"/>
 			<item value="printf"/>
 			<item value="huart"/>
-			<item value="UART"/>
 		</list>
 		<list key="replacehistory">
 		</list>

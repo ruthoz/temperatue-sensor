@@ -2,7 +2,7 @@
 FREERTOS.BinarySemaphores01=srtartDHTdataReading,Dynamic,NULL;startDataPrinting,Dynamic,NULL
 FREERTOS.FootprintOK=true
 FREERTOS.IPParameters=Tasks01,FootprintOK,BinarySemaphores01,configTOTAL_HEAP_SIZE
-FREERTOS.Tasks01=defaultTask,24,128,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL;DhtTask,40,128,Entry_DhtTask,As external,NULL,Dynamic,NULL,NULL;delayTask,24,128,Entry_delayTask,As external,NULL,Dynamic,NULL,NULL;printTask,24,256,Entry_printTask,As external,NULL,Dynamic,NULL,NULL;blinkTask,24,128,Entry_blinkTask,As external,&ledB,Dynamic,NULL,NULL
+FREERTOS.Tasks01=defaultTask,24,128,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL;DhtTask,24,128,Entry_DhtTask,As external,NULL,Dynamic,NULL,NULL;delayTask,24,128,Entry_delayTask,As external,NULL,Dynamic,NULL,NULL;printTask,24,256,Entry_printTask,As external,NULL,Dynamic,NULL,NULL;blinkTask,24,128,Entry_blinkTask,As external,&ledB,Dynamic,NULL,NULL
 FREERTOS.configTOTAL_HEAP_SIZE=5000
 File.Version=6
 GPIO.groupedBy=Group By Peripherals

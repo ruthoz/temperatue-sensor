@@ -27,10 +27,10 @@ void Led_init(Led* led , GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 void Entry_blinkTask(void *obj)
 {
   /* USER CODE BEGIN Entry_blinkTask */
+	Led *led = (Led*)obj;
   /* Infinite loop */
   for(;;)
   {
-	  Led *led = (Led*)obj;
 	  HAL_GPIO_TogglePin(led->GPIOx, led->GPIO_Pin);
 	  osDelay(led->delay);
   }
