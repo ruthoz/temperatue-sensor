@@ -1,0 +1,31 @@
+/*
+ * App.h
+ *
+ *  Created on: Oct 13, 2022
+ *      Author: student
+ */
+
+#ifndef INC_APP_H_
+#define INC_APP_H_
+
+#include "main.h"
+
+typedef struct Application_{
+	uint16_t magicNamber;
+	AppVer version;
+	uint8_t appType;
+	uint32_t crc;
+	uint8_t flag;
+}Application;
+
+typedef struct AppVer_{
+	uint8_t major;
+	uint8_t minor;
+	uint8_t release;
+	uint8_t build;
+}AppVer;
+
+void App_init(Application* app , AppVer* ver , uint8_t appType , uint8_t flag );
+
+
+#endif /* INC_APP_H_ */

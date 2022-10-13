@@ -1,3 +1,4 @@
+"./Core/Src/App.o"
 "./Core/Src/Button.o"
 "./Core/Src/Buzzer.o"
 "./Core/Src/CLI.o"

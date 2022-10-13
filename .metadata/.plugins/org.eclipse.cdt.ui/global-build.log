@@ -1,21 +1,23 @@
-20:56:21 **** Incremental Build of configuration Debug for project FreeRTOS-MutualExclution ****
+20:21:13 **** Incremental Build of configuration Debug for project mystm ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/task44.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -I../Middlewares/Third_Party/FreeRTOS/Source/include -I../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/task44.d" -MT"Core/Src/task44.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/task44.o"
-arm-none-eabi-gcc -o "FreeRTOS-MutualExclution.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\FreeRTOS-MutualExclution\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="FreeRTOS-MutualExclution.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: FreeRTOS-MutualExclution.elf
+arm-none-eabi-gcc -o "mystm.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\mystm\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="mystm.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: mystm.elf
  
-arm-none-eabi-size   FreeRTOS-MutualExclution.elf 
-arm-none-eabi-objdump -h -S  FreeRTOS-MutualExclution.elf  > "FreeRTOS-MutualExclution.list"
+arm-none-eabi-size   mystm.elf 
+arm-none-eabi-objdump -h -S  mystm.elf  > "mystm.list"
+arm-none-eabi-objcopy  -O binary  mystm.elf  "mystm.bin"
    text	   data	    bss	    dec	    hex	filename
-  30756	    128	  15248	  46132	   b434	FreeRTOS-MutualExclution.elf
+  44120	    708	   2808	  47636	   ba14	mystm.elf
 Finished building: default.size.stdout
  
-Finished building: FreeRTOS-MutualExclution.list
+Finished building: mystm.bin
  
-20:56:26 **** Incremental Build of configuration Debug for project FreeRTOS-MutualExclution ****
+Finished building: mystm.list
+ 
+20:21:18 **** Incremental Build of configuration Debug for project mystm ****
 make -j12 all 
-arm-none-eabi-size   FreeRTOS-MutualExclution.elf 
+arm-none-eabi-size   mystm.elf 
    text	   data	    bss	    dec	    hex	filename
-  30756	    128	  15248	  46132	   b434	FreeRTOS-MutualExclution.elf
+  44120	    708	   2808	  47636	   ba14	mystm.elf
 Finished building: default.size.stdout
  

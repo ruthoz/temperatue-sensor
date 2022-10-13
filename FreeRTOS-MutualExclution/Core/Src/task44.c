@@ -8,7 +8,7 @@
 //#define USE_MUTEX
 
 extern osMutexId_t myMutex01Handle;
-static int GlobalFlag = 1;
+int GlobalFlag = 0;
 
 void printTask(char* name)
 {

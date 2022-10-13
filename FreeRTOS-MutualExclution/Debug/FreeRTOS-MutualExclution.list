@@ -9,41 +9,41 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .rodata       00000204  08007620  08007620  00017620  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08007824  08007824  00020078  2**0
+  3 .ARM.extab    00000000  08007824  08007824  00020074  2**0
                   CONTENTS
   4 .ARM          00000008  08007824  08007824  00017824  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  0800782c  0800782c  00020078  2**0
+  5 .preinit_array 00000000  0800782c  0800782c  00020074  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   6 .init_array   00000004  0800782c  0800782c  0001782c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
   7 .fini_array   00000004  08007830  08007830  00017830  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000078  20000000  08007834  00020000  2**2
+  8 .data         00000074  20000000  08007834  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00003590  20000078  080078ac  00020078  2**2
+  9 .bss          00003594  20000074  080078a8  00020074  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20003608  080078ac  00023608  2**0
+ 10 ._user_heap_stack 00000600  20003608  080078a8  00023608  2**0
                   ALLOC
- 11 .ARM.attributes 00000030  00000000  00000000  00020078  2**0
+ 11 .ARM.attributes 00000030  00000000  00000000  00020074  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0001b2f7  00000000  00000000  000200a8  2**0
+ 12 .debug_info   0001b2f7  00000000  00000000  000200a4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 000037a0  00000000  00000000  0003b39f  2**0
+ 13 .debug_abbrev 000037b3  00000000  00000000  0003b39b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001738  00000000  00000000  0003eb40  2**3
+ 14 .debug_aranges 00001738  00000000  00000000  0003eb50  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 000015e0  00000000  00000000  00040278  2**3
+ 15 .debug_ranges 000015e0  00000000  00000000  00040288  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00005033  00000000  00000000  00041858  2**0
+ 16 .debug_macro  00005033  00000000  00000000  00041868  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00019b69  00000000  00000000  0004688b  2**0
+ 17 .debug_line   00019b69  00000000  00000000  0004689b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0010010d  00000000  00000000  000603f4  2**0
+ 18 .debug_str    0010010d  00000000  00000000  00060404  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  00160501  2**0
+ 19 .comment      00000050  00000000  00000000  00160511  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00006948  00000000  00000000  00160554  2**2
+ 20 .debug_frame  00006948  00000000  00000000  00160564  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -60,7 +60,7 @@ Disassembly of section .text:
  80001a2:	2301      	movs	r3, #1
  80001a4:	7023      	strb	r3, [r4, #0]
  80001a6:	bd10      	pop	{r4, pc}
- 80001a8:	20000078 	.word	0x20000078
+ 80001a8:	20000074 	.word	0x20000074
  80001ac:	00000000 	.word	0x00000000
  80001b0:	08007608 	.word	0x08007608
 
@@ -73,7 +73,7 @@ Disassembly of section .text:
  80001be:	f3af 8000 	nop.w
  80001c2:	bd08      	pop	{r3, pc}
  80001c4:	00000000 	.word	0x00000000
- 80001c8:	2000007c 	.word	0x2000007c
+ 80001c8:	20000078 	.word	0x20000078
  80001cc:	08007608 	.word	0x08007608
 
 080001d0 <memchr>:
@@ -438,7 +438,7 @@ int _write(int fd, char* ptr, int len)
  8000596:	46bd      	mov	sp, r7
  8000598:	bd80      	pop	{r7, pc}
  800059a:	bf00      	nop
- 800059c:	20000094 	.word	0x20000094
+ 800059c:	20000090 	.word	0x20000090
 
 080005a0 <main>:
 /**
@@ -571,24 +571,24 @@ int main(void)
   while (1)
  800062c:	e7fe      	b.n	800062c <main+0x8c>
  800062e:	bf00      	nop
- 8000630:	2000012c 	.word	0x2000012c
+ 8000630:	20000128 	.word	0x20000128
  8000634:	0800765c 	.word	0x0800765c
- 8000638:	20000134 	.word	0x20000134
+ 8000638:	20000130 	.word	0x20000130
  800063c:	08007664 	.word	0x08007664
- 8000640:	2000013c 	.word	0x2000013c
+ 8000640:	20000138 	.word	0x20000138
  8000644:	0800766c 	.word	0x0800766c
  8000648:	08007734 	.word	0x08007734
- 800064c:	20000128 	.word	0x20000128
+ 800064c:	20000124 	.word	0x20000124
  8000650:	080076a4 	.word	0x080076a4
  8000654:	08000849 	.word	0x08000849
- 8000658:	20000118 	.word	0x20000118
+ 8000658:	20000114 	.word	0x20000114
  800065c:	080076c8 	.word	0x080076c8
  8000660:	08000bcd 	.word	0x08000bcd
- 8000664:	2000011c 	.word	0x2000011c
+ 8000664:	20000118 	.word	0x20000118
  8000668:	080076ec 	.word	0x080076ec
- 800066c:	20000120 	.word	0x20000120
+ 800066c:	2000011c 	.word	0x2000011c
  8000670:	08007710 	.word	0x08007710
- 8000674:	20000124 	.word	0x20000124
+ 8000674:	20000120 	.word	0x20000120
 
 08000678 <SystemClock_Config>:
 /**
@@ -783,7 +783,7 @@ static void MX_USART2_UART_Init(void)
  800076e:	bf00      	nop
  8000770:	bd80      	pop	{r7, pc}
  8000772:	bf00      	nop
- 8000774:	20000094 	.word	0x20000094
+ 8000774:	20000090 	.word	0x20000090
  8000778:	40004400 	.word	0x40004400
 
 0800077c <MX_GPIO_Init>:
@@ -1268,7 +1268,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8000a2a:	bd80      	pop	{r7, pc}
  8000a2c:	40021000 	.word	0x40021000
  8000a30:	431bde83 	.word	0x431bde83
- 8000a34:	20000144 	.word	0x20000144
+ 8000a34:	20000140 	.word	0x20000140
  8000a38:	40014400 	.word	0x40014400
 
 08000a3c <NMI_Handler>:
@@ -1389,7 +1389,7 @@ void TIM1_UP_TIM16_IRQHandler(void)
  8000a72:	bf00      	nop
  8000a74:	bd80      	pop	{r7, pc}
  8000a76:	bf00      	nop
- 8000a78:	20000144 	.word	0x20000144
+ 8000a78:	20000140 	.word	0x20000140
 
 08000a7c <_read>:
 	_kill(status, -1);
@@ -1595,7 +1595,7 @@ void *_sbrk(ptrdiff_t incr)
  8000b7a:	bd80      	pop	{r7, pc}
  8000b7c:	20018000 	.word	0x20018000
  8000b80:	00000400 	.word	0x00000400
- 8000b84:	20000190 	.word	0x20000190
+ 8000b84:	2000018c 	.word	0x2000018c
  8000b88:	20003608 	.word	0x20003608
 
 08000b8c <SystemInit>:
@@ -1630,7 +1630,7 @@ void SystemInit(void)
 08000bb0 <printTask>:
 
 extern osMutexId_t myMutex01Handle;
-static int GlobalFlag = 1;
+int GlobalFlag = 0;
 
 void printTask(char* name)
 {
@@ -1736,7 +1736,7 @@ void entry_Task(void *argument) {
 	for (;;) {
  8000c30:	e7d2      	b.n	8000bd8 <entry_Task+0xc>
  8000c32:	bf00      	nop
- 8000c34:	20000004 	.word	0x20000004
+ 8000c34:	20000190 	.word	0x20000190
 
 08000c38 <Reset_Handler>:
 
@@ -1826,11 +1826,11 @@ LoopForever:
   ldr r0, =_sdata
  8000c74:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 8000c78:	20000078 	.word	0x20000078
+ 8000c78:	20000074 	.word	0x20000074
   ldr r2, =_sidata
  8000c7c:	08007834 	.word	0x08007834
   ldr r2, =_sbss
- 8000c80:	20000078 	.word	0x20000078
+ 8000c80:	20000074 	.word	0x20000074
   ldr r4, =_ebss
  8000c84:	20003608 	.word	0x20003608
 
@@ -1929,7 +1929,7 @@ __weak void HAL_IncTick(void)
  8000ce4:	f85d 7b04 	ldr.w	r7, [sp], #4
  8000ce8:	4770      	bx	lr
  8000cea:	bf00      	nop
- 8000cec:	2000000c 	.word	0x2000000c
+ 8000cec:	20000008 	.word	0x20000008
  8000cf0:	20000194 	.word	0x20000194
 
 08000cf4 <HAL_GetTick>:
@@ -3391,7 +3391,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
  800158c:	40021000 	.word	0x40021000
  8001590:	08007744 	.word	0x08007744
  8001594:	20000000 	.word	0x20000000
- 8001598:	20000008 	.word	0x20000008
+ 8001598:	20000004 	.word	0x20000004
  800159c:	4ba0      	ldr	r3, [pc, #640]	; (8001820 <HAL_RCC_OscConfig+0x504>)
  800159e:	681b      	ldr	r3, [r3, #0]
  80015a0:	4a9f      	ldr	r2, [pc, #636]	; (8001820 <HAL_RCC_OscConfig+0x504>)
@@ -4696,7 +4696,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  8001cc4:	40021000 	.word	0x40021000
  8001cc8:	08007744 	.word	0x08007744
  8001ccc:	20000000 	.word	0x20000000
- 8001cd0:	20000008 	.word	0x20000008
+ 8001cd0:	20000004 	.word	0x20000004
 
 08001cd4 <HAL_RCC_GetSysClockFreq>:
   *
@@ -16898,7 +16898,7 @@ volatile uint32_t ulDummy = 0;
  8005eb4:	46bd      	mov	sp, r7
  8005eb6:	f85d 7b04 	ldr.w	r7, [sp], #4
  8005eba:	4770      	bx	lr
- 8005ebc:	20000010 	.word	0x20000010
+ 8005ebc:	2000000c 	.word	0x2000000c
 
 08005ec0 <SVC_Handler>:
 /*-----------------------------------------------------------*/
@@ -17183,7 +17183,7 @@ BaseType_t xPortStartScheduler( void )
  8006040:	20000ec0 	.word	0x20000ec0
  8006044:	20000ec4 	.word	0x20000ec4
  8006048:	e000ed20 	.word	0xe000ed20
- 800604c:	20000010 	.word	0x20000010
+ 800604c:	2000000c 	.word	0x2000000c
  8006050:	e000ef34 	.word	0xe000ef34
 
 08006054 <vPortEnterCritical>:
@@ -17244,7 +17244,7 @@ void vPortEnterCritical( void )
  80060a4:	46bd      	mov	sp, r7
  80060a6:	f85d 7b04 	ldr.w	r7, [sp], #4
  80060aa:	4770      	bx	lr
- 80060ac:	20000010 	.word	0x20000010
+ 80060ac:	2000000c 	.word	0x2000000c
  80060b0:	e000ed04 	.word	0xe000ed04
 
 080060b4 <vPortExitCritical>:
@@ -17297,7 +17297,7 @@ void vPortExitCritical( void )
  80060fc:	f85d 7b04 	ldr.w	r7, [sp], #4
  8006100:	4770      	bx	lr
  8006102:	bf00      	nop
- 8006104:	20000010 	.word	0x20000010
+ 8006104:	2000000c 	.word	0x2000000c
 	...
 
 08006110 <PendSV_Handler>:
@@ -18274,7 +18274,7 @@ uint8_t *puc;
  800666e:	6818      	ldr	r0, [r3, #0]
  8006670:	4770      	bx	lr
  8006672:	bf00      	nop
- 8006674:	20000014 	.word	0x20000014
+ 8006674:	20000010 	.word	0x20000010
 
 08006678 <__libc_init_array>:
  8006678:	b570      	push	{r4, r5, r6, lr}
@@ -18349,7 +18349,7 @@ uint8_t *puc;
  8006710:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
  8006714:	b004      	add	sp, #16
  8006716:	4770      	bx	lr
- 8006718:	20000014 	.word	0x20000014
+ 8006718:	20000010 	.word	0x20000010
 
 0800671c <std>:
  800671c:	2300      	movs	r3, #0
@@ -19586,7 +19586,7 @@ uint8_t *puc;
  8007246:	2000      	movs	r0, #0
  8007248:	e7f7      	b.n	800723a <__swsetup_r+0xba>
  800724a:	bf00      	nop
- 800724c:	20000014 	.word	0x20000014
+ 800724c:	20000010 	.word	0x20000010
  8007250:	080077b0 	.word	0x080077b0
  8007254:	080077d0 	.word	0x080077d0
  8007258:	08007790 	.word	0x08007790

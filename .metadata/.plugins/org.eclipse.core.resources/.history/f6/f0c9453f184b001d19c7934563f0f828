@@ -1,0 +1,21 @@
+#include "App.h"
+#include <stdio.h>
+
+void App_init(Application* app , AppVer* ver , uint8_t appType , uint8_t flag )
+{
+	app->magicNamber = 0x5A5A;
+	app->version =  ver;
+	app->appType = appType;
+	app->flag = flag;
+	app->crc = 0;
+}
+void printAppVer(Application* app)
+{
+	uint8_t major = app->version >> 24 ;
+	uint8_t minor  = app->version  >> 16;
+	uint8_t release =  app->version >> 8  ;
+	uint8_t build = app->version ;
+
+	printf("%d.%d.%d.%d \r\n" , major, minor, release, build );
+}
+

@@ -8,12 +8,23 @@
 #include "DHT11.h"
 #include "MainTimer.h"
 #include "Flash.h"
+#include "App.h"
 #include <stdio.h>
 
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart2;
+//version
+#define MAJOR   1
+#define MINOR   1<<8
+#define RELEASE 3<<16
+#define BUILD   5<<24
 
+const Application app = {.magicNamber = 0x5A5A,
+  	                     .version = MAJOR|MINOR|RELEASE|BUILD,
+  	                     .appType = 1,
+  	                     .flag = 0,
+  	                     .crc = 0,};
 Led ledR;
 Led ledB;
 Button button1;
@@ -21,6 +32,8 @@ Buzzer buzzer;
 Clock clock1;
 Dht11 TempHum;
 Flash flash;
+
+
 //////////////////////////////////////////////////////////////
 int _write(int fd, char* ptr, int len)
 {
@@ -50,7 +63,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 	//Dht11_onTimerInterrupt(&TempHum);
 
 		//////////////////////////////////////////
-		flash_onTimerInterrupt(&flash);
+	//flash_onTimerInterrupt(&flash);
 
 
 	}
@@ -89,10 +102,13 @@ void mainloop()
 	Buzzer_init(&buzzer);
 	Clock_init(&clock1);
 	Button_init(&button1, B2_GPIO_Port ,  B2_Pin);
-	Flash_init(&flash);
+	//Flash_init(&flash);
 	Cli_init();
 	Dht11_init(&TempHum);
 
+#ifdef DEBUG
+	printAppVer(&app);
+#endif
 
 	while(1){
 		Dht11_hasData(&TempHum);
