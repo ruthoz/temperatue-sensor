@@ -11,16 +11,16 @@
 #include "main.h"
 
 
-typedef struct Application_{
+typedef struct ApplicationInfo_{
 	uint16_t magicNamber;
 	uint32_t version;
 	uint8_t appType;
 	uint32_t crc;
 	uint8_t flag;
-}Application;
+}ApplicationInfo;
 
 
-void printAppVer(const Application* app);
+void printAppVer(const ApplicationInfo* app);
 
 
 

@@ -20,11 +20,11 @@ extern UART_HandleTypeDef huart2;
 #define RELEASE 3<<16
 #define BUILD   5<<24
 
-const Application app = {.magicNamber = 0x5A5A,
-  	                     .version = MAJOR|MINOR|RELEASE|BUILD,
-  	                     .appType = 1,
-  	                     .flag = 0,
-  	                     .crc = 0,};
+const ApplicationInfo app = {.magicNamber = 0x5A5A,
+  	                         .version = MAJOR|MINOR|RELEASE|BUILD,
+  	                         .appType = 1,
+  	                         .flag = 0,
+  	                         .crc = 0,};
 Led ledR;
 Led ledB;
 Button button1;

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 
-void printAppVer(const Application* app)
+void printAppVer(const ApplicationInfo* app)
 {
 	uint8_t major = app->version ;
 	uint8_t minor  = app->version >> 8  ;
