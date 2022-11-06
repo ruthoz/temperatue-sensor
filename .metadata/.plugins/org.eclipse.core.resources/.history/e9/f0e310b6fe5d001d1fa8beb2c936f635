@@ -1,0 +1,45 @@
+#include <CliCommand.h>
+#include "Led.h"
+#include "main.h"
+#include <stdio.h>
+
+CliCommand::CliCommand() {}
+
+
+class LedOnCmd : public CliCommand {
+private:
+	Led *_led;
+public:
+	LedOnCmd (Led *led){
+		_led= led;
+	}
+	void doCommand(){
+		_led->on();
+	}
+};
+
+class LedOffCmd : public CliCommand {
+private:
+	Led *_led;
+public:
+	LedOffCmd (Led *led){
+		_led= led;
+	}
+	void doCommand(){
+		_led->off();
+	}
+};
+
+class LedblinkCmd : public CliCommand {
+private:
+	Led *_led;
+public:
+	LedblinkCmd (Led *led){
+		_led= led;
+	}
+	void doCommand(){
+		_led->blink();
+	}
+};
+
+

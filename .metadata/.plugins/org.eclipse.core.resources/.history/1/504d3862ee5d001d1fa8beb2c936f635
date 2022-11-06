@@ -1,0 +1,21 @@
+#include "Led.h"
+#include "main.h"
+#include <stdio.h>
+#include "ICommand.h"
+
+ICommand::ICommand() {
+
+
+}
+
+
+class Ledon : public ICommand {
+	Led *led;
+public:
+	Ledon(){}
+	void doCommand(char* param){
+		led->on();
+	}
+	~Ledon(){}
+};
+

@@ -1,0 +1,18 @@
+/*
+ * ICommand.cpp
+ *
+ *  Created on: 6 Nov 2022
+ *      Author: student
+ */
+
+#include "ICommand.h"
+
+ICommand::ICommand() {
+	// TODO Auto-generated constructor stub
+
+}
+
+ICommand::~ICommand() {
+	// TODO Auto-generated destructor stub
+}
+

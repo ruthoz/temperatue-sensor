@@ -1,0 +1,13 @@
+#include "mymain.h"
+
+#ifndef SRC_ICOMMAND_H_
+#define SRC_ICOMMAND_H_
+
+class ICommand {
+public:
+	ICommand();
+	//~ICommand();
+	virtual void do() = 0;
+};
+
+#endif /* SRC_ICOMMAND_H_ */

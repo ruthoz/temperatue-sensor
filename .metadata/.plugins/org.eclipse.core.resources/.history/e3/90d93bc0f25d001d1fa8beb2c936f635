@@ -1,0 +1,21 @@
+#include "Led.h"
+#include "main.h"
+#include <stdio.h>
+#include "ICommand.h"
+
+ICommand::ICommand() {
+
+
+}
+
+
+class LedOn : public ICommand {
+private:
+	Led *led;
+public:
+	void doCommand(){
+		led->on();
+	}
+
+};
+

@@ -1,0 +1,14 @@
+#include "mymain.h"
+
+#ifndef SRC_ICOMMAND_H_
+#define SRC_ICOMMAND_H_
+
+class CliCommand {
+public:
+	CliCommand();
+	void CliInit();
+	virtual void doCommand() = 0;
+	virtual ~CliCommand(){}
+};
+
+#endif /* SRC_ICOMMAND_H_ */
