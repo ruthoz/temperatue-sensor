@@ -1,23 +1,29 @@
+
 #include "mymain.h"
+#include <cstring>
 
 #ifndef SRC_ICOMMAND_H_
 #define SRC_ICOMMAND_H_
 
 #define MAX_NAME_LEN 20
 
+
+
 class CliCommand {
 private:
-	const char* _name(MAX_NAME_LEN);
+	char _name[MAX_NAME_LEN];
 public:
-	CliCommand(char * name){
-		strcpy(_name,name)
+	CliCommand(){}
+	CliCommand(const char* name){
+		strcpy(_name, name);
 	}
-	void CliInit();
 	virtual void doCommand() = 0;
 	virtual ~CliCommand(){}
-	const char* getName()const{
-		return _name
+	const char* getName ()const {
+		return _name;
 	}
 };
+
+void CliInit();
 
 #endif /* SRC_ICOMMAND_H_ */

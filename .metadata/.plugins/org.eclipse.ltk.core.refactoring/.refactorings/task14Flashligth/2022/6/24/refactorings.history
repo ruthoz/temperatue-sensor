@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;task14Flashligth/Core/Src/stathmachine&apos; to &apos;stathmachine.c&apos;" description="Rename resource &apos;stathmachine&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/stathmachine" name="stathmachine.c" stamp="1654785119888" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;task14Flashligth/Core/Src/stathmachine.c&apos; to &apos;stateflashligth.c&apos;" description="Rename resource &apos;stathmachine.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/stathmachine.c" name="stateflashligth.c" stamp="1654785958022" updateReferences="true"/>
-</session>

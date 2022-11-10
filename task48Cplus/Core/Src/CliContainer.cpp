@@ -1,9 +1,4 @@
-/*
- * container.cpp
- *
- *  Created on: 6 Nov 2022
- *      Author: student
- */
+
 
 #include "CliContainer.h"
 #include <stdio.h>
@@ -17,7 +12,7 @@
 CliContainer::CliContainer()
 {
 	m_counter = 0;
-	memset(m_CliCommand, NULL, sizeof(CliCommand)* MAX_CLI);
+	memset(m_CliCommand, 0, sizeof(CliCommand*) * MAX_CLI);
 }
 
 CliContainer::~CliContainer()
@@ -36,6 +31,17 @@ void CliContainer::add(CliCommand* pCliCommand)
 		m_counter++;
 	}
 }
+
+int CliContainer::Call (char* cmdname){
+	for (int i = 0; i < m_counter; i++){
+		if(strcmp(cmdname, m_CliCommand[i]->getName())==0){
+			m_CliCommand[i]->doCommand();
+			return 1;
+		}
+	}
+	return 0;
+}
+
 
 
 

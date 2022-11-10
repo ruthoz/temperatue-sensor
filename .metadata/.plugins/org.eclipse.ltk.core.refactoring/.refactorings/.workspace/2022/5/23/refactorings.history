@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;task11Queue/Core/Src/RingBuffer&apos;" deleteContents="false" description="Delete resource &apos;task11Queue/Core/Src/RingBuffer&apos;" element1="/task11Queue/Core/Src/RingBuffer" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1654009715260"/>&#x0A;<refactoring comment="Delete resource &apos;task11Queue/Core/Src/ringBuffer&apos;" deleteContents="false" description="Delete resource &apos;task11Queue/Core/Src/ringBuffer&apos;" element1="/task11Queue/Core/Src/ringBuffer" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1654009967803"/>
-</session>

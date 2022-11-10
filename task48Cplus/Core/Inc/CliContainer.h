@@ -16,6 +16,10 @@ private:
 	int m_counter;
 public:
 	void add(CliCommand * pCliCommand);
+	int getCounter(){
+		return m_counter;
+	}
+	int Call (char* cmdname);
 };
 
 
