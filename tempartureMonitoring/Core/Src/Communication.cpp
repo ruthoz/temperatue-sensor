@@ -12,6 +12,7 @@ static uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
 static int cmdcount = 0;
 static int cmdprint = 0;
 
+
 //////////////////////////////////////////////////////////////
 extern "C" int _write(int fd, char* ptr, int len)
 {
@@ -21,7 +22,7 @@ extern "C" int _write(int fd, char* ptr, int len)
 //////////////////////////////////////////////////////////////
 
 
-///////////////////////////////////////////////////////////////////////
+
 
 int Communication_commTask()
 {
@@ -89,19 +90,19 @@ void Communication_handleCommand()
    }
 }
 
-extern "C" void Entry_comTask()
-{
-  /* USER CODE BEGIN Entry_comTask */
-  /* Infinite loop */
-  while(1)
-  {
-	  if (Communication_commTask()){
-		  Communication_handleCommand();
-	  }
-    osDelay(1);
-  }
-  /* USER CODE END Entry_comTask */
-}
+//extern "C" void Entry_comTask()
+//{
+//  /* USER CODE BEGIN Entry_comTask */
+//  /* Infinite loop */
+//  while(1)
+//  {
+//	  if (Communication_commTask()){
+//		  Communication_handleCommand();
+//	  }
+//    osDelay(1);
+//  }
+//  /* USER CODE END Entry_comTask */
+//}
 
 
 

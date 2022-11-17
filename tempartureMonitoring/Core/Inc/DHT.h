@@ -1,9 +1,11 @@
 #include "main.h"
+#include "TimerTask.h"
 
 #ifndef INC_DHT_H_
 #define INC_DHT_H_
 
-class DHT {
+
+class DHT : public TimerTask {
 private:
 
 	enum DhtState{
@@ -44,6 +46,7 @@ public:
 
 	// async read
 	void readAsync();
+	void timerFunc() override;
 	void onGpioInterrupt(uint16_t pin);
 	int hasData();
 

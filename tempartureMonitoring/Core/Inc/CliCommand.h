@@ -1,13 +1,11 @@
 
-#include "mymain.h"
+#include "main.h"
 #include <cstring>
 
 #ifndef SRC_ICOMMAND_H_
 #define SRC_ICOMMAND_H_
 
 #define MAX_NAME_LEN 20
-
-
 
 class CliCommand {
 private:

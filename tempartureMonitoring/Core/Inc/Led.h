@@ -1,11 +1,12 @@
 #include "main.h"
+#include "TimerTask.h"
 
 #ifndef SRC_LED_H_
 #define SRC_LED_H_
 
 
 
-class Led {
+class Led: public TimerTask {
 private:
 
 	typedef enum LedState_
@@ -25,7 +26,8 @@ public:
 
     void on();
     void off();
-    void blink();
+    void timerFunc() override;
+
 };
 
 #endif /* SRC_LED_H_ */

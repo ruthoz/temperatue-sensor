@@ -27,7 +27,7 @@ void Led::off()
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_RESET);
 }
 
-void Led::blink()
+void Led::timerFunc()
 {
 	_state = STATE_BLINKING,
 	HAL_GPIO_TogglePin(_GPIOx, _GPIO_Pin);

@@ -43,7 +43,7 @@ void Button::interrupt()
 		}
 	}
 }
-void Button::onTimerInterrupt()
+void Button:: timerFunc()
 {
 	if (state == BUTTON_STATE) {
 		counter++;
