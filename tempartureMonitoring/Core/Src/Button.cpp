@@ -30,16 +30,17 @@ void Button::interrupt()
 
 		if(delayTick > 500){
 			state = BUTTON_LONG_PRESS;
-		    printf("Long \n\r");
+		        printf("Long \n\r");
 		}
 		else if (state == BUTTON_STATE) {
 			state = BUTTON_DOUBLE_PRESS;
 			counter = 0;
 			printf("Double \n\r");
+			mainTimer.deleteTimerTask(this);
 		}
 		else{
 			state = BUTTON_STATE;
-			   //MainTimer_registerCallback(Button_onTimerInterrupt , button);
+			mainTimer.addTimerTask(this);
 		}
 	}
 }
@@ -51,6 +52,7 @@ void Button:: timerFunc()
 			state = BUTTON_STATE_PRESS;
 			counter = 0;
 			printf("One \n\r");
+			mainTimer.deleteTimerTask(this);
 		}
 	}
 }
