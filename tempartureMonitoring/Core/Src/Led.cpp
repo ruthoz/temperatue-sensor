@@ -21,12 +21,14 @@ void Led::on()
 {
 	_state = STATE_ON,
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_SET);
+	mainTimer.deleteTimerTask(this);
 }
 
 void Led::off()
 {
 	_state = STATE_OFF,
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_RESET);
+	mainTimer.deleteTimerTask(this);
 }
 void Led::blink()
 {
