@@ -8,6 +8,8 @@
 #include "Led.h"
 #include <stdio.h>
 
+extern MainTimer mainTimer;
+
 Led::Led(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
 	_GPIOx = GPIOx;
@@ -26,9 +28,14 @@ void Led::off()
 	_state = STATE_OFF,
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_RESET);
 }
-
-void Led::timerFunc()
+void Led::blink()
 {
 	_state = STATE_BLINKING,
-	HAL_GPIO_TogglePin(_GPIOx, _GPIO_Pin);
+	mainTimer.addTimerTask(this);
+}
+void Led::timerFunc()
+{
+	if(_state = STATE_BLINKING){
+		HAL_GPIO_TogglePin(_GPIOx, _GPIO_Pin);
+	}	
 }
