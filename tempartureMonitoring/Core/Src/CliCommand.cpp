@@ -5,7 +5,7 @@
 #include "CliContainer.h"
 #include <cstring>
 
-extern Led ledR;
+
 extern Led ledB;
 extern CliContainer CliContainer;
 
@@ -27,15 +27,21 @@ public:
 	}
 };
 
+class LedBlinkCmd : public CliCommand {
+	Led *_led;
+public:
+	LedBlinkCmd (const char * name, Led * led) : CliCommand(name), _led(led) {}
+	void doCommand() override {
+		_led->blink();
+	}
+};
+
 
 void CliInit()
 {
-	//////////////////ledR//////////////////////////////
-	CliContainer.add (new LedOnCmd("ledRedOn", &ledR));
-	CliContainer.add (new LedOffCmd("ledRedOff", &ledB));
-
 	//////////////////ledB//////////////////////////////
-	CliContainer.add (new LedOnCmd("ledBlueOn", &ledR));
+	CliContainer.add (new LedOnCmd("ledBlueOn", &ledB));
 	CliContainer.add (new LedOffCmd("ledBlueOff", &ledB));
+	CliContainer.add (new LedOffCmd("ledBlueBlink", &ledB));
 }
 

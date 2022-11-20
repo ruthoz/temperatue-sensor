@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "MyMain.h"
 
 /* USER CODE END Includes */
 
@@ -54,6 +55,20 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for blinkTask */
+osThreadId_t blinkTaskHandle;
+const osThreadAttr_t blinkTask_attributes = {
+  .name = "blinkTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for comTask */
+osThreadId_t comTaskHandle;
+const osThreadAttr_t comTask_attributes = {
+  .name = "comTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -66,6 +81,8 @@ static void MX_I2C1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM6_Init(void);
 void StartDefaultTask(void *argument);
+extern void startBlinkTask(void *argument);
+extern void StartComTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -135,6 +152,12 @@ int main(void)
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of blinkTask */
+  blinkTaskHandle = osThreadNew(startBlinkTask, NULL, &blinkTask_attributes);
+
+  /* creation of comTask */
+  comTaskHandle = osThreadNew(StartComTask, NULL, &comTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -151,6 +174,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

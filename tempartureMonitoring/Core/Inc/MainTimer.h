@@ -1,15 +1,16 @@
 #ifndef INC_MAINTIMER_H_
 #define INC_MAINTIMER_H_
 
-//#include <string.h>
+
 #include "TimerTask.h"
-//#include <stdio.h>
+
 #define MAX_TIMER_TASKS 10
 
 class MainTimer {
 private:
 	TimerTask* _timerTasks[MAX_TIMER_TASKS];
 	int _timerCount;
+
 	int getTimerTaskIndex(TimerTask *pTimerTask) {
 		for (int i = 0; i < _timerCount; i++) {
 			if (_timerTasks[i] == pTimerTask) {
@@ -26,7 +27,7 @@ public:
 	~MainTimer() {}
 	void addTimerTask(TimerTask *pTimerTask) {
 		if (getTimerTaskIndex(pTimerTask) == -1) {
-			_timerTasks[m_timerCount] = pTimerTask;
+			_timerTasks[_timerCount] = pTimerTask;
 			_timerCount++;
 		}
 	}
@@ -35,10 +36,10 @@ public:
 		int i = getTimerTaskIndex(pTimerTask);
 		if (i != -1) {
 			_timerCount--;
-			if (i == m_timerCount) {
+			if (i == _timerCount) {
 				_timerTasks[i] = { 0 };
 			} else {
-				_timerTasks[i] = _timerTasks[m_timerCount];
+				_timerTasks[i] = _timerTasks[_timerCount];
 				_timerTasks[_timerCount] = { 0 };
 			}
 		}

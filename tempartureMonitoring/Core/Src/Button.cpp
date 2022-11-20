@@ -7,13 +7,15 @@
 
 #include "Button.h"
 #include "main.h"
-#include <stdio.h>
-uint32_t counter = 0;
+
+extern MainTimer mainTimer;
+
 
 Button::Button(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
 	_GPIOx = GPIOx;
 	_GPIO_Pin = GPIO_Pin;
+	_counter = 0;
 }
 
 void Button::interrupt()
@@ -34,7 +36,7 @@ void Button::interrupt()
 		}
 		else if (state == BUTTON_STATE) {
 			state = BUTTON_DOUBLE_PRESS;
-			counter = 0;
+			_counter = 0;
 			printf("Double \n\r");
 			mainTimer.deleteTimerTask(this);
 		}
@@ -47,10 +49,10 @@ void Button::interrupt()
 void Button:: timerFunc()
 {
 	if (state == BUTTON_STATE) {
-		counter++;
-		if(counter > 200 ){
+		_counter++;
+		if(_counter > 200 ){
 			state = BUTTON_STATE_PRESS;
-			counter = 0;
+			_counter = 0;
 			printf("One \n\r");
 			mainTimer.deleteTimerTask(this);
 		}

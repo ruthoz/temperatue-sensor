@@ -8,7 +8,6 @@
 class Rtc {
 private:
 
-
 	typedef struct DateTime_{
 		int sec;
 		int min;
@@ -19,6 +18,7 @@ private:
 		int year;
 	} DateTime;
 
+	DateTime * dateTime;
 	I2C_HandleTypeDef * _hi2c;
 	uint8_t _devAddr;
 
@@ -32,8 +32,8 @@ public:
 	};
 	~Rtc(){};
 
-	void getTime(DateTime * dateTime);
-	void setTime(DateTime * dateTime);
+	void getTime();
+	void setTime();
 
 };
 

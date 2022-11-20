@@ -10,6 +10,7 @@
 
 #include "main.h"
 #include <stdint.h>
+#include "cmsis_os.h"
 
 typedef void(*HandlerFunc)(void* , char*);
 

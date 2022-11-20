@@ -14,7 +14,7 @@ extern MainTimer mainTimer;
 #define MAX_BITS 40
 
 
-int DHT::waitWhileEqual(int value, int expectedTime)
+int Dht::waitWhileEqual(int value, int expectedTime)
 {
 	// set a timeout 20% bigger than the expected time
 	uint32_t timeout = expectedTime + (expectedTime) / 5;
@@ -30,7 +30,7 @@ int DHT::waitWhileEqual(int value, int expectedTime)
 	return true;
 }
 
-void DHT::setGpioOutput()
+void Dht::setGpioOutput()
 {
 	GPIO_InitTypeDef gpioStruct = {0};
 
@@ -43,7 +43,7 @@ void DHT::setGpioOutput()
 	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
 }
 
-void DHT::setGpioInput()
+void Dht::setGpioInput()
 {
 	GPIO_InitTypeDef gpioStruct = {0};
 
@@ -56,7 +56,7 @@ void DHT::setGpioInput()
 	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
 }
 
-void DHT::setGpioExti()
+void Dht::setGpioExti()
 {
 	GPIO_InitTypeDef gpioStruct = {0};
 
@@ -68,7 +68,7 @@ void DHT::setGpioExti()
 	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
-int DHT::read()
+int Dht::read()
 {
 	setGpioOutput();
 
@@ -144,28 +144,27 @@ int DHT::read()
 	return HAL_OK;
 }
 
-//static void DHT::onTimerInterrupt()
-//{
-//	if (_state != DHT_STATE_POWER_ON) {
-//		return;
-//	}
-//
-//	_counter++;
-//	if (_counter >= _maxCounter) {
-//		_state = DHT_STATE_POWER_ON_ACK;
-//		HAL_GPIO_WritePin(_gpioPort, _gpioPin, 1);
-//		HAL_TIM_Base_Start(_timer);
-//		__HAL_TIM_SET_COUNTER(_timer, 0);
-//
-//		setGpioExti(this);
-//
-//		dht->counter = 0;
-                mainTimer.deleteTimerTask(this);
-//		MainTimer_unregisterCallback(Dht_onTimerInterrupt, this);
-//	}
-//}
+void Dht::timerFunc()
+{
+	if (_state != DHT_STATE_POWER_ON) {
+		return;
+	}
 
-void DHT::readAsync()
+	_counter++;
+	if (_counter >= _maxCounter) {
+		_state = DHT_STATE_POWER_ON_ACK;
+		HAL_GPIO_WritePin(_gpioPort, _gpioPin, GPIO_PIN_SET);
+		HAL_TIM_Base_Start(_timer);
+		__HAL_TIM_SET_COUNTER(_timer, 0);
+
+		setGpioExti();
+
+		_counter = 0;
+        mainTimer.deleteTimerTask(this);
+	}
+}
+
+void Dht::readAsync()
 {
 	setGpioOutput();
 
@@ -174,89 +173,88 @@ void DHT::readAsync()
 
 	// should be in '0' for 18-20 ms
 	mainTimer.addTimerTask(this);
-	//MainTimer_registerCallback(Dht_onTimerInterrupt);
 	_counter = 0;
 	_maxCounter = 19;
 
 	_state = DHT_STATE_POWER_ON;
 }
 
-void DHT::onGpioInterrupt(uint16_t pin)
-{
-	if (_gpioPin != pin) {
-		return;
-	}
+//void Dht::onGpioInterrupt(uint16_t pin)
+//{
+//	if (_gpioPin != pin) {
+//		return;
+//	}
+//
+//	uint32_t timeMs = __HAL_TIM_GET_COUNTER(_timer);
+//
+//	switch (_state)
+//	{
+//	case DHT_STATE_POWER_ON_ACK:
+//		if (timeMs > 50) {
+//			_state = DHT_STATE_ERROR;
+//		}
+//		_state = DHT_STATE_INIT_RESPONSE;
+//		break;
+//
+//	case DHT_STATE_INIT_RESPONSE:
+//		if (timeMs > 200) {
+//			_state = DHT_STATE_ERROR;
+//		}
+//
+//		memset(_data, 0, sizeof(_data));
+//		_bit = 0;
+//		_state = DHT_STATE_RECEIVE_DATA;
+//
+//		break;
+//
+//	case DHT_STATE_RECEIVE_DATA:
+//		{
+//			if (timeMs > 140) {
+//				_state = DHT_STATE_ERROR;
+//			}
+//
+//			// 50us in low + 50 us in high (> 30 and < 70)
+//			int byte = _bit / 8;
+//			_data[byte] <<= 1;
+//
+//			if (timeMs > 100) {
+//				// '1' is detected
+//				_data[byte] |= 1;
+//			}
+//
+//			_bit++;
+//			if (_bit >= MAX_BITS) {
+//
+//				uint8_t checksum = _data[0] + _data[1] +
+//						_data[2] + _data[3];
+//
+//				if (checksum == _data[4]) {
+//					_state = DHT_STATE_READY;
+//
+//					_humidity = (double)_data[0] + ((double)_data[1]) / 10;
+//					_temperature = (double)_data[2] + ((double)_data[3]) / 10;
+//				}
+//				else {
+//					_state = DHT_STATE_ERROR;
+//				}
+//
+//				// stop timer and disable GPIO interrupts
+//				HAL_TIM_Base_Stop(_timer);
+//				HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+//			}
+//
+//		}
+//		break;
+//
+//	default:
+//		// in all other states ignore the interrupt
+//		break;
+//	}
+//
+//	__HAL_TIM_SET_COUNTER(_timer, 0);
+//}
 
-	uint32_t timeMs = __HAL_TIM_GET_COUNTER(_timer);
-
-	switch (_state)
-	{
-	case DHT_STATE_POWER_ON_ACK:
-		if (timeMs > 50) {
-			_state = DHT_STATE_ERROR;
-		}
-		_state = DHT_STATE_INIT_RESPONSE;
-		break;
-
-	case DHT_STATE_INIT_RESPONSE:
-		if (timeMs > 200) {
-			_state = DHT_STATE_ERROR;
-		}
-
-		memset(_data, 0, sizeof(_data));
-		_bit = 0;
-		_state = DHT_STATE_RECEIVE_DATA;
-
-		break;
-
-	case DHT_STATE_RECEIVE_DATA:
-		{
-			if (timeMs > 140) {
-				_state = DHT_STATE_ERROR;
-			}
-
-			// 50us in low + 50 us in high (> 30 and < 70)
-			int byte = _bit / 8;
-			_data[byte] <<= 1;
-
-			if (timeMs > 100) {
-				// '1' is detected
-				_data[byte] |= 1;
-			}
-
-			_bit++;
-			if (_bit >= MAX_BITS) {
-
-				uint8_t checksum = _data[0] + _data[1] +
-						_data[2] + _data[3];
-
-				if (checksum == _data[4]) {
-					_state = DHT_STATE_READY;
-
-					_humidity = (double)_data[0] + ((double)_data[1]) / 10;
-					_temperature = (double)_data[2] + ((double)_data[3]) / 10;
-				}
-				else {
-					_state = DHT_STATE_ERROR;
-				}
-
-				// stop timer and disable GPIO interrupts
-				HAL_TIM_Base_Stop(_timer);
-				HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
-			}
-
-		}
-		break;
-
-	default:
-		// in all other states ignore the interrupt
-		break;
-	}
-
-	__HAL_TIM_SET_COUNTER(_timer, 0);
-}
-
-int DHT::hasData()
+int Dht::hasData()
 {
 	int hasData = _state == DHT_STATE_READY;
 
@@ -268,12 +266,12 @@ int DHT::hasData()
 	return hasData;
 }
 
-double DHT::getHumidty()
+double Dht::getHumidty()
 {
 	return _humidity;
 }
 
-double DHT::getTempperature()
+double Dht::getTempperature()
 {
 	return _temperature;
 }

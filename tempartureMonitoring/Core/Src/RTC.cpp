@@ -26,7 +26,7 @@ uint8_t Rtc::intToBcd(int value, int minVal, int maxVal)
 }
 
 
-void Rtc::getTime(DateTime * dateTime)
+void Rtc::getTime()
 {
 	uint8_t buffer[RTC_DATE_TIME_SIZE];
 	HAL_I2C_Mem_Read(_hi2c, _devAddr, 0, 1, buffer, RTC_DATE_TIME_SIZE, 0xFF);
@@ -44,7 +44,7 @@ void Rtc::getTime(DateTime * dateTime)
 
 
 
-void Rtc::setTime(DateTime * dateTime)
+void Rtc::setTime()
 {
 	uint8_t buffer[RTC_DATE_TIME_SIZE];
 

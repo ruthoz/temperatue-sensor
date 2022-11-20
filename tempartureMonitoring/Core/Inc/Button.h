@@ -8,6 +8,8 @@
 #include "main.h"
 #include <stdint.h>
 #include "TimerTask.h"
+#include "MainTimer.h"
+#include <stdio.h>
 
 #ifndef INC_BUTTON_H_
 #define INC_BUTTON_H_
@@ -28,6 +30,7 @@ private:
 	uint32_t timeTickOff;
 	GPIO_TypeDef* _GPIOx;
 	uint16_t _GPIO_Pin;
+	uint32_t _counter;
 public:
 
 

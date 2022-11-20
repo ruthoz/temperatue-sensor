@@ -7,8 +7,7 @@
 
 #include "Led.h"
 #include <stdio.h>
-
-extern MainTimer mainTimer;
+#include "cmsis_os.h"
 
 Led::Led(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
@@ -21,23 +20,32 @@ void Led::on()
 {
 	_state = STATE_ON,
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_SET);
-	mainTimer.deleteTimerTask(this);
 }
 
 void Led::off()
 {
 	_state = STATE_OFF,
 	HAL_GPIO_WritePin(_GPIOx, _GPIO_Pin, GPIO_PIN_RESET);
-	mainTimer.deleteTimerTask(this);
 }
 void Led::blink()
 {
-	_state = STATE_BLINKING,
-	mainTimer.addTimerTask(this);
+	_state = STATE_BLINKING;
 }
-void Led::timerFunc()
+
+Led ledB(LD2_GPIO_Port , LD2_Pin );
+
+extern "C" void startBlinkTask()
 {
-	if(_state = STATE_BLINKING){
-		HAL_GPIO_TogglePin(_GPIOx, _GPIO_Pin);
-	}	
+  /* USER CODE BEGIN startBlinkTask */
+	//Led *_led = (Led*)argument ;
+  /* Infinite loop */
+  while(1)
+  {
+	if(ledB.getState() == STATE_BLINKING){
+	HAL_GPIO_TogglePin(ledB.getGPIOx(), ledB.getGPIO_Pin());
+	osDelay(600);
+	}
+	osDelay(1);
+  }
+  /* USER CODE END startBlinkTask */
 }

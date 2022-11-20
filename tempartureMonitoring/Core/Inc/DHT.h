@@ -1,11 +1,12 @@
 #include "main.h"
 #include "TimerTask.h"
+#include "MainTimer.h"
 
 #ifndef INC_DHT_H_
 #define INC_DHT_H_
 
 
-class DHT : public TimerTask {
+class Dht : public TimerTask {
 private:
 
 	enum DhtState{
@@ -30,7 +31,7 @@ private:
 	double _humidity;
 
 public:
-	DHT( GPIO_TypeDef* gpioPort, uint16_t gpioPin, TIM_HandleTypeDef * timer){
+	Dht( GPIO_TypeDef* gpioPort, uint16_t gpioPin, TIM_HandleTypeDef * timer){
 		_gpioPort = gpioPort;
 		_gpioPin = gpioPin;
 		_timer = timer;
@@ -40,14 +41,14 @@ public:
 		_temperature = 0.0;
 		_humidity = 0.0;
 	}
-	~DHT(){};
+	~Dht(){};
 	// sync read
 	int read();
 
 	// async read
 	void readAsync();
 	void timerFunc() override;
-	void onGpioInterrupt(uint16_t pin);
+	//void onGpioInterrupt(uint16_t pin);
 	int hasData();
 
 	int waitWhileEqual(int value, int expectedTime);

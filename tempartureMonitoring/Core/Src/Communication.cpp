@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "CliContainer.h"
-#include "cmsis_os.h"
+//#include "cmsis_os.h"
 
 extern UART_HandleTypeDef huart2;
 extern CliContainer CliContainer;
@@ -90,19 +90,20 @@ void Communication_handleCommand()
    }
 }
 
-//extern "C" void Entry_comTask()
-//{
-//  /* USER CODE BEGIN Entry_comTask */
-//  /* Infinite loop */
-//  while(1)
-//  {
-//	  if (Communication_commTask()){
-//		  Communication_handleCommand();
-//	  }
-//    osDelay(1);
-//  }
-//  /* USER CODE END Entry_comTask */
-//}
+extern "C" void StartComTask()
+{
+  /* USER CODE BEGIN Entry_comTask */
+  /* Infinite loop */
+  CliInit();
+  while(1)
+  {
+	  if (Communication_commTask()){
+		  Communication_handleCommand();
+	  }
+    osDelay(1);
+  }
+  /* USER CODE END Entry_comTask */
+}
 
 
 
