@@ -10,8 +10,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-
-
+extern MainTimer mainTimer;
 #define MAX_BITS 40
 
 
@@ -145,10 +144,8 @@ int DHT::read()
 	return HAL_OK;
 }
 
-//static void DHT::onTimerInterrupt(void * obj)
+//static void DHT::onTimerInterrupt()
 //{
-//	Dht * dht = (Dht *)obj;
-//
 //	if (_state != DHT_STATE_POWER_ON) {
 //		return;
 //	}
@@ -163,6 +160,7 @@ int DHT::read()
 //		setGpioExti(this);
 //
 //		dht->counter = 0;
+                mainTimer.deleteTimerTask(this);
 //		MainTimer_unregisterCallback(Dht_onTimerInterrupt, this);
 //	}
 //}
@@ -175,6 +173,7 @@ void DHT::readAsync()
 	HAL_GPIO_WritePin(_gpioPort, _gpioPin, GPIO_PIN_RESET);
 
 	// should be in '0' for 18-20 ms
+	mainTimer.addTimerTask(this);
 	//MainTimer_registerCallback(Dht_onTimerInterrupt);
 	_counter = 0;
 	_maxCounter = 19;
