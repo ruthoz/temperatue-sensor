@@ -1,8 +1,5 @@
 #include <Communication.h>
-#include <stdio.h>
-#include <string.h>
-#include "CliContainer.h"
-//#include "cmsis_os.h"
+
 
 extern UART_HandleTypeDef huart2;
 extern CliContainer CliContainer;
@@ -11,18 +8,6 @@ extern CliContainer CliContainer;
 static uint8_t cmdbuffer[MAX_BUFFER_LENGTH];
 static int cmdcount = 0;
 static int cmdprint = 0;
-
-
-//////////////////////////////////////////////////////////////
-extern "C" int _write(int fd, char* ptr, int len)
-{
-	HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, HAL_MAX_DELAY);
-	return len;
-}
-//////////////////////////////////////////////////////////////
-
-
-
 
 int Communication_commTask()
 {
@@ -77,17 +62,16 @@ int Communication_commTask()
 void Communication_handleCommand()
 {
 	char cmd[20];
-	char state[20];
 	char param [20];
 
-   int params = sscanf((const char*)cmdbuffer, "%s %s %s", cmd, state, param );
-   if (params == 0){
+    int params = sscanf((const char*)cmdbuffer,"%s %s", cmd, param );
+    if (params == 0){
 	   return;
-   }
+    }
 
-   if(CliContainer.Call(cmd) == 0){
-   printf("Invalid command\r\n");
-   }
+    if(CliContainer.Call(cmd, param) == 0){
+    printf("Invalid command\r\n");
+    }
 }
 
 extern "C" void StartComTask()

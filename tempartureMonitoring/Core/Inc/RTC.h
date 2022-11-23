@@ -5,10 +5,7 @@
 #ifndef INC_RTC_H_
 #define INC_RTC_H_
 
-class Rtc {
-private:
-
-	typedef struct DateTime_{
+typedef struct DateTime_{
 		int sec;
 		int min;
 		int hours;
@@ -18,7 +15,8 @@ private:
 		int year;
 	} DateTime;
 
-	DateTime * dateTime;
+class Rtc {
+private:
 	I2C_HandleTypeDef * _hi2c;
 	uint8_t _devAddr;
 
@@ -32,8 +30,8 @@ public:
 	};
 	~Rtc(){};
 
-	void getTime();
-	void setTime();
+	void getTime(DateTime* dateTime);
+	void setTime(DateTime* dateTime);
 
 };
 

@@ -45,6 +45,7 @@
 
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim6;
+TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart2;
 
@@ -69,6 +70,27 @@ const osThreadAttr_t comTask_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for buttonTak */
+osThreadId_t buttonTakHandle;
+const osThreadAttr_t buttonTak_attributes = {
+  .name = "buttonTak",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
+/* Definitions for DhtTask */
+osThreadId_t DhtTaskHandle;
+const osThreadAttr_t DhtTask_attributes = {
+  .name = "DhtTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
+/* Definitions for ManagerTask */
+osThreadId_t ManagerTaskHandle;
+const osThreadAttr_t ManagerTask_attributes = {
+  .name = "ManagerTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -80,9 +102,13 @@ static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM6_Init(void);
+static void MX_TIM16_Init(void);
 void StartDefaultTask(void *argument);
 extern void startBlinkTask(void *argument);
 extern void StartComTask(void *argument);
+extern void StartbuttonTak(void *argument);
+extern void StartDhtTask(void *argument);
+extern void StartManagerTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -125,6 +151,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM3_Init();
   MX_TIM6_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -157,6 +184,15 @@ int main(void)
 
   /* creation of comTask */
   comTaskHandle = osThreadNew(StartComTask, NULL, &comTask_attributes);
+
+  /* creation of buttonTak */
+  buttonTakHandle = osThreadNew(StartbuttonTak, NULL, &buttonTak_attributes);
+
+  /* creation of DhtTask */
+  DhtTaskHandle = osThreadNew(StartDhtTask, NULL, &DhtTask_attributes);
+
+  /* creation of ManagerTask */
+  ManagerTaskHandle = osThreadNew(StartManagerTask, NULL, &ManagerTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -299,7 +335,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 7999;
+  htim3.Init.Prescaler = 799;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 100;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -364,6 +400,38 @@ static void MX_TIM6_Init(void)
   /* USER CODE BEGIN TIM6_Init 2 */
 
   /* USER CODE END TIM6_Init 2 */
+
+}
+
+/**
+  * @brief TIM16 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM16_Init(void)
+{
+
+  /* USER CODE BEGIN TIM16_Init 0 */
+
+  /* USER CODE END TIM16_Init 0 */
+
+  /* USER CODE BEGIN TIM16_Init 1 */
+
+  /* USER CODE END TIM16_Init 1 */
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 80;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 65535;
+  htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim16.Init.RepetitionCounter = 0;
+  htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM16_Init 2 */
+
+  /* USER CODE END TIM16_Init 2 */
 
 }
 

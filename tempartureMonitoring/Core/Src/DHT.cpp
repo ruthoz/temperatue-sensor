@@ -7,12 +7,12 @@
 
 #include <DHT.h>
 #include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
+#include "cmsis_os.h"
 
-extern MainTimer mainTimer;
 #define MAX_BITS 40
+extern TIM_HandleTypeDef htim16;
 
+Dht dht( DHT11_GPIO_Port , DHT11_Pin, &htim16);
 
 int Dht::waitWhileEqual(int value, int expectedTime)
 {
@@ -56,18 +56,6 @@ void Dht::setGpioInput()
 	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
 }
 
-void Dht::setGpioExti()
-{
-	GPIO_InitTypeDef gpioStruct = {0};
-
-	gpioStruct.Pin = _gpioPin;
-	gpioStruct.Mode = GPIO_MODE_IT_FALLING;
-	gpioStruct.Pull = GPIO_PULLUP;
-
-	HAL_GPIO_Init(_gpioPort, &gpioStruct);
-	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-}
-
 int Dht::read()
 {
 	setGpioOutput();
@@ -98,7 +86,13 @@ int Dht::read()
 	if (!waitWhileEqual(1, 80)) {
 		return HAL_ERROR;
 	}
+	reciveData();
+	return 1;
 
+}
+
+int Dht::reciveData()
+{
 	// DHT start send data bits
 
 	uint8_t data[5] = { 0 };
@@ -144,128 +138,6 @@ int Dht::read()
 	return HAL_OK;
 }
 
-void Dht::timerFunc()
-{
-	if (_state != DHT_STATE_POWER_ON) {
-		return;
-	}
-
-	_counter++;
-	if (_counter >= _maxCounter) {
-		_state = DHT_STATE_POWER_ON_ACK;
-		HAL_GPIO_WritePin(_gpioPort, _gpioPin, GPIO_PIN_SET);
-		HAL_TIM_Base_Start(_timer);
-		__HAL_TIM_SET_COUNTER(_timer, 0);
-
-		setGpioExti();
-
-		_counter = 0;
-        mainTimer.deleteTimerTask(this);
-	}
-}
-
-void Dht::readAsync()
-{
-	setGpioOutput();
-
-	// switch the sensor on by putting the line in '0'
-	HAL_GPIO_WritePin(_gpioPort, _gpioPin, GPIO_PIN_RESET);
-
-	// should be in '0' for 18-20 ms
-	mainTimer.addTimerTask(this);
-	_counter = 0;
-	_maxCounter = 19;
-
-	_state = DHT_STATE_POWER_ON;
-}
-
-//void Dht::onGpioInterrupt(uint16_t pin)
-//{
-//	if (_gpioPin != pin) {
-//		return;
-//	}
-//
-//	uint32_t timeMs = __HAL_TIM_GET_COUNTER(_timer);
-//
-//	switch (_state)
-//	{
-//	case DHT_STATE_POWER_ON_ACK:
-//		if (timeMs > 50) {
-//			_state = DHT_STATE_ERROR;
-//		}
-//		_state = DHT_STATE_INIT_RESPONSE;
-//		break;
-//
-//	case DHT_STATE_INIT_RESPONSE:
-//		if (timeMs > 200) {
-//			_state = DHT_STATE_ERROR;
-//		}
-//
-//		memset(_data, 0, sizeof(_data));
-//		_bit = 0;
-//		_state = DHT_STATE_RECEIVE_DATA;
-//
-//		break;
-//
-//	case DHT_STATE_RECEIVE_DATA:
-//		{
-//			if (timeMs > 140) {
-//				_state = DHT_STATE_ERROR;
-//			}
-//
-//			// 50us in low + 50 us in high (> 30 and < 70)
-//			int byte = _bit / 8;
-//			_data[byte] <<= 1;
-//
-//			if (timeMs > 100) {
-//				// '1' is detected
-//				_data[byte] |= 1;
-//			}
-//
-//			_bit++;
-//			if (_bit >= MAX_BITS) {
-//
-//				uint8_t checksum = _data[0] + _data[1] +
-//						_data[2] + _data[3];
-//
-//				if (checksum == _data[4]) {
-//					_state = DHT_STATE_READY;
-//
-//					_humidity = (double)_data[0] + ((double)_data[1]) / 10;
-//					_temperature = (double)_data[2] + ((double)_data[3]) / 10;
-//				}
-//				else {
-//					_state = DHT_STATE_ERROR;
-//				}
-//
-//				// stop timer and disable GPIO interrupts
-//				HAL_TIM_Base_Stop(_timer);
-//				HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
-//			}
-//
-//		}
-//		break;
-//
-//	default:
-//		// in all other states ignore the interrupt
-//		break;
-//	}
-//
-//	__HAL_TIM_SET_COUNTER(_timer, 0);
-//}
-
-int Dht::hasData()
-{
-	int hasData = _state == DHT_STATE_READY;
-
-	if (hasData) {
-		// reset state to avoid multiple reads
-		_state = DHT_STATE_NO_DATA;
-	}
-
-	return hasData;
-}
-
 double Dht::getHumidty()
 {
 	return _humidity;
@@ -274,4 +146,18 @@ double Dht::getHumidty()
 double Dht::getTempperature()
 {
 	return _temperature;
+}
+
+
+/* USER CODE END Header_StartDhtTask */
+extern "C" void StartDhtTask()
+{
+  /* USER CODE BEGIN StartDhtTask */
+  /* Infinite loop */
+  while(1)
+  {
+	dht.read();
+    osDelay(1000);
+  }
+  /* USER CODE END StartDhtTask */
 }

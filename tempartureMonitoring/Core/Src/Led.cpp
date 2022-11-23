@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "cmsis_os.h"
 
+Led ledB(LD2_GPIO_Port , LD2_Pin );
+
 Led::Led(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {
 	_GPIOx = GPIOx;
@@ -32,12 +34,11 @@ void Led::blink()
 	_state = STATE_BLINKING;
 }
 
-Led ledB(LD2_GPIO_Port , LD2_Pin );
 
 extern "C" void startBlinkTask()
 {
   /* USER CODE BEGIN startBlinkTask */
-	//Led *_led = (Led*)argument ;
+
   /* Infinite loop */
   while(1)
   {

@@ -1,41 +1,40 @@
 
 
 #include "CliContainer.h"
-#include <stdio.h>
-#include <cstring>
-#include "Led.h"
-#include "Communication.h"
-#include <stdlib.h>
 
-
+CliContainer CliContainer;
 
 CliContainer::CliContainer()
 {
-	m_counter = 0;
-	memset(m_CliCommand, 0, sizeof(CliCommand*) * MAX_CLI);
+	_counter = 0;
+	memset(_CliCommand, 0, sizeof(CliCommand*) * MAX_CLI);
 }
 
 CliContainer::~CliContainer()
 {
 	for (int i = 0; i < MAX_CLI; i++) {
-		if (m_CliCommand[i] != NULL) {
-			delete m_CliCommand[i];
+		if (_CliCommand[i] != NULL) {
+			delete _CliCommand[i];
 		}
 	}
 }
 
 void CliContainer::add(CliCommand* pCliCommand)
 {
-	if (m_counter < MAX_CLI) {
-		m_CliCommand[m_counter] = pCliCommand;
-		m_counter++;
+	if (_counter < MAX_CLI) {
+		_CliCommand[_counter] = pCliCommand;
+		_counter++;
 	}
 }
 
-int CliContainer::Call (char* cmdname){
-	for (int i = 0; i < m_counter; i++){
-		if(strcmp(cmdname, m_CliCommand[i]->getName())==0){
-			m_CliCommand[i]->doCommand();
+int CliContainer::getCounter(){
+	return _counter;
+}
+
+int CliContainer::Call (char* cmdname, char* param ){
+	for (int i = 0; i < _counter; i++){
+		if(strcmp(cmdname, _CliCommand[i]->getName())==0){
+			_CliCommand[i]->doCommand(param);
 			return 1;
 		}
 	}

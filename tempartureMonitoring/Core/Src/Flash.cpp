@@ -8,9 +8,10 @@
 #include "Flash.h"
 #include <stdio.h>
 
+Flash flash;
 void Flash::erase()
 {
-	_flashState = FLASH_STATE_ERASE;
+	uint32_t pageError;
 	FLASH_EraseInitTypeDef basicFlash;
 
 	basicFlash.TypeErase = FLASH_TYPEERASE_PAGES;
@@ -20,24 +21,23 @@ void Flash::erase()
 
 	HAL_FLASH_Unlock();
 
-	HAL_FLASHEx_Erase_IT(&basicFlash);
+	HAL_FLASHEx_Erase(&basicFlash, &pageError);
 }
 
-void Flash::writh( void* data, uint32_t dataSize)
+void Flash::writh(void* data)
 {
-	if(_flashState==FLASH_STATE_ERASE){
-		return;
+	erase();
+
+	int size = sizeof(data);
+	for(int i = 0; i < size; i += sizeof(uint64_t)){
+			uint64_t Data = *(uint64_t *)(data+i);
+			HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, (uint32_t)_flashAdd+i, Data);
 	}
+}
 
-	HAL_FLASH_Program_IT(FLASH_TYPEPROGRAM_DOUBLEWORD, _flashAdd , *(uint64_t*)(data + _dataIndex));
-	_dataIndex +=8;
-
-	///////////data over full//////////
-	if((_dataIndex)>=dataSize){
-		_dataIndex = 0;
-
-		//HAL_FLASH_Lock();
-	}
+void Flash::read( uint32_t* buffer)
+{
+	buffer = (uint32_t *)(_flashAdd);
 }
 
 

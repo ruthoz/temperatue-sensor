@@ -29,7 +29,7 @@ public:
 	Buzzer(TIM_HandleTypeDef * timer){
 	_timer = timer;
 	_noteBuzzer [0] = 390;
-	_noteBuzzer [1] = 202;
+	_noteBuzzer [1] = 100;
 	_state = MUSIC_OFF;
 	_sizeOfMusic = (sizeof(_noteBuzzer) / sizeof(_noteBuzzer[0]));
 	_currentNote= 0;

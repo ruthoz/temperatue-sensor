@@ -3,23 +3,24 @@
 
 #define MAX_CLI 20
 
+#include "main.h"
 #include "CliCommand.h"
-
+#include <stdio.h>
+#include <cstring>
+#include <stdlib.h>
 
 class CliContainer
 {
-	CliCommand* m_CliCommand[MAX_CLI];
+	CliCommand* _CliCommand[MAX_CLI];
 public:
 	CliContainer();
 	~CliContainer();
 private:
-	int m_counter;
+	int _counter;
 public:
 	void add(CliCommand * pCliCommand);
-	int getCounter(){
-		return m_counter;
-	}
-	int Call (char* cmdname);
+	int getCounter();
+	int Call (char* cmdname, char* param);
 };
 
 

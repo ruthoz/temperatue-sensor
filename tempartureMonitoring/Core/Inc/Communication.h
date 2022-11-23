@@ -9,6 +9,9 @@
 #define INC_HANDLECOMMAND_C_
 
 #include "main.h"
+#include "CliContainer.h"
+#include <stdio.h>
+#include <string.h>
 #include <stdint.h>
 #include "cmsis_os.h"
 

@@ -11,6 +11,9 @@
 #define RTC_START_STOP      (1 << 7)
 #define RTC_DATE_TIME_SIZE  7
 
+extern I2C_HandleTypeDef hi2c1;
+Rtc rtc(&hi2c1, 0xD0);
+
 int Rtc::bcdToInt(uint8_t bcd)
 {
 	return (bcd >> 4) * 10 + (bcd & 0x0F);
@@ -26,7 +29,7 @@ uint8_t Rtc::intToBcd(int value, int minVal, int maxVal)
 }
 
 
-void Rtc::getTime()
+void Rtc::getTime(DateTime* dateTime)
 {
 	uint8_t buffer[RTC_DATE_TIME_SIZE];
 	HAL_I2C_Mem_Read(_hi2c, _devAddr, 0, 1, buffer, RTC_DATE_TIME_SIZE, 0xFF);
@@ -44,7 +47,7 @@ void Rtc::getTime()
 
 
 
-void Rtc::setTime()
+void Rtc::setTime(DateTime* dateTime)
 {
 	uint8_t buffer[RTC_DATE_TIME_SIZE];
 

@@ -6,7 +6,8 @@
  */
 
 #include <Buzzer.h>
-
+extern TIM_HandleTypeDef htim3;
+Buzzer buzzer(&htim3);
 
 void Buzzer::onTimerInterrupt()
 {

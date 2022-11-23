@@ -10,5 +10,11 @@
 
 #include "main.h"
 
+typedef struct _thresholdTemp{
+	uint16_t criticalTemp;
+	uint16_t warningTemp;
+}thresholdTemp;
+
+
 
 #endif /* INC_MYMAIN_H_ */

@@ -1,6 +1,14 @@
 
 #include "main.h"
+#include "MyMain.h"
 #include <cstring>
+#include "CliContainer.h"
+#include "Led.h"
+#include "Buzzer.h"
+#include "RTC.h"
+#include <stdio.h>
+#include "Flash.h"
+
 
 #ifndef SRC_ICOMMAND_H_
 #define SRC_ICOMMAND_H_
@@ -15,7 +23,7 @@ public:
 	CliCommand(const char* name){
 		strcpy(_name, name);
 	}
-	virtual void doCommand() = 0;
+	virtual void doCommand(const char* param) = 0;
 	virtual ~CliCommand(){}
 	const char* getName ()const {
 		return _name;

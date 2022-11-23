@@ -12,22 +12,23 @@
 #include "CliCommand.h"
 #include "CliContainer.h"
 #include <Communication.h>
-#include "MainTimer.h"
+#include "cmsis_os.h"
 
-extern TIM_HandleTypeDef htim6;
-Button button(B2_GPIO_Port ,  B2_Pin);
-CliContainer CliContainer;
-//Led ledB(LD2_GPIO_Port , LD2_Pin );
-MainTimer mainTimer;
+extern Button button;
+extern Led ledB;
+extern UART_HandleTypeDef huart2;
 
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
+//////////////////////////////////////////////////////////////
+extern "C" int _write(int fd, char* ptr, int len)
 {
-	if(htim == &htim6){
-	///////////button///////////////////////////////////
-		mainTimer.callTimerFunc();
-	}
-
+	HAL_UART_Transmit(&huart2, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+	return len;
 }
+//////////////////////////////////////////////////////////////
+
+
+
+thresholdTemp Temprature;
 
 extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -36,12 +37,10 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 
 //extern "C" void mainloop() {
-//	CliInit();
+
 //
 //	while(1){
-//		if (Communication_commTask()){
-//				  Communication_handleCommand();
-//		}
+//
 //		if(button.checkState() == BUTTON_LONG_PRESS){
 //			ledB.off();
 //		}
@@ -51,6 +50,18 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 //	}
 //}
 
+/* USER CODE END Header_StartManagerTask */
+extern "C" void StartManagerTask(void *argument)
+{
+  /* USER CODE BEGIN StartManagerTask */
 
+  /* Infinite loop */
+  while(1)
+  {
+
+    osDelay(300);
+  }
+  /* USER CODE END StartManagerTask */
+}
 
 
