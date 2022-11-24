@@ -6,9 +6,11 @@
  */
 
 #include "MyMain.h"
-#include "Led.h"
 #include "main.h"
+#include "Led.h"
 #include "Button.h"
+#include "DHT.h"
+#include "Flash.h"
 #include "CliCommand.h"
 #include "CliContainer.h"
 #include <Communication.h>
@@ -16,6 +18,8 @@
 
 extern Button button;
 extern Led ledB;
+extern Dht dht;
+extern Flash flash;
 extern UART_HandleTypeDef huart2;
 
 //////////////////////////////////////////////////////////////
@@ -27,39 +31,29 @@ extern "C" int _write(int fd, char* ptr, int len)
 //////////////////////////////////////////////////////////////
 
 
-
-thresholdTemp Temprature;
-
 extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	button.interrupt();
 }
 
 
-//extern "C" void mainloop() {
-
-//
-//	while(1){
-//
-//		if(button.checkState() == BUTTON_LONG_PRESS){
-//			ledB.off();
-//		}
-//		if(button.checkState() == BUTTON_DOUBLE_PRESS){
-//			ledB.on();
-//		}
-//	}
-//}
-
+thresholdTemp Temprature;
 /* USER CODE END Header_StartManagerTask */
 extern "C" void StartManagerTask(void *argument)
 {
   /* USER CODE BEGIN StartManagerTask */
 
+	flash.read(&Temprature);
   /* Infinite loop */
-  while(1)
-  {
-
-    osDelay(300);
+	while(1)
+	{
+	if(dht.getTempperature() > Temprature.criticalTemp){
+		ledB.blink();
+	}
+	else{
+		ledB.off();
+	}
+	osDelay(1000);
   }
   /* USER CODE END StartManagerTask */
 }

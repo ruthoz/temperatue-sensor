@@ -5,7 +5,7 @@ extern Led ledB;
 extern Buzzer buzzer;
 extern Rtc rtc;
 extern Flash flash;
-extern thresholdTemp Temprature;
+extern  thresholdTemp Temprature;
 extern CliContainer CliContainer;
 
 class LedOnCmd : public CliCommand {
@@ -102,6 +102,16 @@ public:
 	}
 };
 
+class getCriticalTempCmd : public CliCommand {
+	Flash* _flash;
+
+public:
+	getCriticalTempCmd (const char * name, Flash* flash) : CliCommand(name), _flash(flash) {}
+	void doCommand(const char* param) override {
+		_flash->read(&Temprature);
+	}
+};
+
 
 void CliInit()
 {
@@ -112,11 +122,16 @@ void CliInit()
 	////////////////////buzzer///////////////////////////
 	CliContainer.add (new BuzzerOnCmd("BOn", &buzzer));
 	CliContainer.add (new BuzzerOffCmd("BOff", &buzzer));
-	/////////////////////////////////////////////////////
+
+	/////////////////////RTC//////////////////////////
 	CliContainer.add (new getDataTimeCmd("getTime", &rtc));
 	CliContainer.add (new setDataTimeCmd("setTime", &rtc));
-	//////////////////////////////////////////////////////
+
+	////////////////////flash/////////////////////////
 	CliContainer.add (new setCriticalTempCmd("setCritical", &flash));
 	CliContainer.add (new setWarningTempCmd("setWarning", &flash));
+
+	CliContainer.add (new getCriticalTempCmd("getCritical", &flash));
+
 }
 

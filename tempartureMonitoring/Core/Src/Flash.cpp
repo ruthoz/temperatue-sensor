@@ -6,7 +6,7 @@
  */
 
 #include "Flash.h"
-#include <stdio.h>
+
 
 Flash flash;
 void Flash::erase()
@@ -35,9 +35,9 @@ void Flash::writh(void* data)
 	}
 }
 
-void Flash::read( uint32_t* buffer)
+void Flash::read( thresholdTemp* buffer)
 {
-	buffer = (uint32_t *)(_flashAdd);
+	buffer = (thresholdTemp *)(_flashAdd);
 }
 
 

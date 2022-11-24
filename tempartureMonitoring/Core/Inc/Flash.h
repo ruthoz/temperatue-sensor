@@ -6,6 +6,7 @@
  */
 #include "main.h"
 #include <stdio.h>
+#include "MyMain.h"
 
 #ifndef FLASH_H_
 #define FLASH_H_
@@ -27,7 +28,7 @@ public:
 
 	void erase();
 	void writh( void* data);
-	void read(uint32_t* buffer);
+	void read(thresholdTemp* buffer);
 };
 
 #endif /* FLASH_H_ */
