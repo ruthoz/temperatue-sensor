@@ -8,7 +8,7 @@
 #include "Button.h"
 #include "cmsis_os.h"
 
-Button button(B2_GPIO_Port ,  B2_Pin);
+extern Button button;
 
 Button::Button(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {

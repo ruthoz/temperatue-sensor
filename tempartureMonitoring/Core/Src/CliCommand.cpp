@@ -5,7 +5,7 @@ extern Led ledB;
 extern Buzzer buzzer;
 extern Rtc rtc;
 extern Flash flash;
-extern  thresholdTemp Temprature;
+extern thresholdTemp Temprature;
 extern CliContainer CliContainer;
 
 class LedOnCmd : public CliCommand {
@@ -85,7 +85,7 @@ public:
 		uint16_t val;
 		val = atoi(param);
 		Temprature.criticalTemp = val;
-		_flash->writh(&Temprature);
+		_flash->writh(&Temprature, sizeof(thresholdTemp));
 	}
 };
 
@@ -98,7 +98,7 @@ public:
 		uint16_t val;
 		val = atoi(param);
 		Temprature.warningTemp = val;
-		_flash->writh(&Temprature);
+		_flash->writh(&Temprature, sizeof(thresholdTemp));
 	}
 };
 
@@ -107,8 +107,9 @@ class getCriticalTempCmd : public CliCommand {
 
 public:
 	getCriticalTempCmd (const char * name, Flash* flash) : CliCommand(name), _flash(flash) {}
-	void doCommand(const char* param) override {
-		_flash->read(&Temprature);
+	void doCommand(const char* param) override
+	{
+		//_flash->read(&Temprature);
 	}
 };
 

@@ -8,7 +8,6 @@
 #include "Flash.h"
 
 
-Flash flash;
 void Flash::erase()
 {
 	uint32_t pageError;
@@ -24,19 +23,22 @@ void Flash::erase()
 	HAL_FLASHEx_Erase(&basicFlash, &pageError);
 }
 
-void Flash::writh(void* data)
+void Flash::writh(void* data, size_t size)
 {
 	erase();
-
-	int size = sizeof(data);
-	for(int i = 0; i < size; i += sizeof(uint64_t)){
-			uint64_t Data = *(uint64_t *)(data+i);
-			HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, (uint32_t)_flashAdd+i, Data);
+	uint64_t* Data = (uint64_t *)(data);
+	for(uint64_t i = 0; i < size ; i ++){
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, (uint32_t)_flashAdd+(i*8), *(Data+i));
 	}
 }
 
-void Flash::read( thresholdTemp* buffer)
+void Flash::read(thresholdTemp* buffer)
 {
+	HAL_FLASH_Unlock();
+	thresholdTemp * data = (thresholdTemp *)(_flashAdd);
+	if(data->magicNum!= 0x5A5A){
+		return;
+	}
 	buffer = (thresholdTemp *)(_flashAdd);
 }
 
