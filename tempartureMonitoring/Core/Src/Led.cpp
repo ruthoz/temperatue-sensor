@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "cmsis_os.h"
 
-Led ledB(LD2_GPIO_Port , LD2_Pin );
+extern Led ledB;
 
 Led::Led(GPIO_TypeDef* GPIOx , uint16_t GPIO_Pin)
 {

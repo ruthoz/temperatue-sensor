@@ -5,15 +5,15 @@
  *      Author: student
  */
 #include "main.h"
-#include <stdio.h>
+#include "MyMain.h"
 
 #ifndef FLASH_H_
 #define FLASH_H_
 
 
-class Flash {
+class Flash
+{
 private:
-
 	uint32_t _flashAdd;
 	uint32_t _page;
 
@@ -26,8 +26,8 @@ public:
 	~Flash(){};
 
 	void erase();
-	void writh( void* data);
-	void read(uint32_t* buffer);
+	void writh( void* data, size_t size);
+	void read(thresholdTemp* buffer);
 };
 
 #endif /* FLASH_H_ */

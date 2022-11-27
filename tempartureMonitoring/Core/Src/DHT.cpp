@@ -12,7 +12,7 @@
 #define MAX_BITS 40
 extern TIM_HandleTypeDef htim16;
 
-Dht dht( DHT11_GPIO_Port , DHT11_Pin, &htim16);
+extern Dht dht;
 
 int Dht::waitWhileEqual(int value, int expectedTime)
 {

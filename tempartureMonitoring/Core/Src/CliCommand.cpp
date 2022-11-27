@@ -85,7 +85,7 @@ public:
 		uint16_t val;
 		val = atoi(param);
 		Temprature.criticalTemp = val;
-		_flash->writh(&Temprature);
+		_flash->writh(&Temprature, sizeof(thresholdTemp));
 	}
 };
 
@@ -98,7 +98,18 @@ public:
 		uint16_t val;
 		val = atoi(param);
 		Temprature.warningTemp = val;
-		_flash->writh(&Temprature);
+		_flash->writh(&Temprature, sizeof(thresholdTemp));
+	}
+};
+
+class getCriticalTempCmd : public CliCommand {
+	Flash* _flash;
+
+public:
+	getCriticalTempCmd (const char * name, Flash* flash) : CliCommand(name), _flash(flash) {}
+	void doCommand(const char* param) override
+	{
+		//_flash->read(&Temprature);
 	}
 };
 
@@ -112,11 +123,16 @@ void CliInit()
 	////////////////////buzzer///////////////////////////
 	CliContainer.add (new BuzzerOnCmd("BOn", &buzzer));
 	CliContainer.add (new BuzzerOffCmd("BOff", &buzzer));
-	/////////////////////////////////////////////////////
+
+	/////////////////////RTC//////////////////////////
 	CliContainer.add (new getDataTimeCmd("getTime", &rtc));
 	CliContainer.add (new setDataTimeCmd("setTime", &rtc));
-	//////////////////////////////////////////////////////
+
+	////////////////////flash/////////////////////////
 	CliContainer.add (new setCriticalTempCmd("setCritical", &flash));
 	CliContainer.add (new setWarningTempCmd("setWarning", &flash));
+
+	CliContainer.add (new getCriticalTempCmd("getCritical", &flash));
+
 }
 

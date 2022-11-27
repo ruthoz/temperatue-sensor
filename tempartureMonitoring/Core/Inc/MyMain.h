@@ -10,10 +10,19 @@
 
 #include "main.h"
 
-typedef struct _thresholdTemp{
-	uint16_t criticalTemp;
-	uint16_t warningTemp;
-}thresholdTemp;
+
+struct thresholdTemp
+{
+		uint16_t criticalTemp = 70;
+		uint16_t warningTemp = 50;
+		uint16_t  magicNum = 0x5A5A;
+};
+
+typedef enum _stateTemp{
+		CRITICAL_TEMPRATURE,
+		WARNING_TEMPRATURE,
+		NORMAL_TEMPRATURE,
+}stateTemp;
 
 
 
