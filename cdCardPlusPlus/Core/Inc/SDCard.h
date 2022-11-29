@@ -14,22 +14,22 @@
 #include <stdarg.h> //for va_list var arg functions
 
 
+
 class SDCard {
 private:
 	//some variables for FatFs
 	FATFS FatFs; 	//Fatfs handle
 	FIL fil; 		//File handle
 	FRESULT fres; //Result after operations
-	char* _nameFile;
+	char _nameFile [20];
 	DWORD free_clusters, free_sectors, total_sectors;
 
 public:
 	SDCard(const char* nameFile);
 	~SDCard();
 	void myprintf(const char *fmt, ...);
-	void openFile();
-	void printFile();
-	void writeToFile(char* readBuf);
+	void readFile();
+	void writeToFile(const char* writeBuf);
 
 };
 

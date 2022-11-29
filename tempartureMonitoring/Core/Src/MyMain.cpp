@@ -16,6 +16,7 @@
 extern UART_HandleTypeDef huart2;
 extern TIM_HandleTypeDef htim16;
 extern TIM_HandleTypeDef htim3;
+extern I2C_HandleTypeDef hi2c1;
 
 Buzzer buzzer(&htim3);
 Button button(B2_GPIO_Port ,  B2_Pin);
@@ -23,6 +24,8 @@ Led ledB(LD2_GPIO_Port , LD2_Pin );
 Dht dht(DHT11_GPIO_Port , DHT11_Pin, &htim16);
 Flash flash;
 thresholdTemp Temprature;
+log log;
+Rtc rtc(&hi2c1, 0xD0);
 
 //////////////////////////////////////////////////////////////
 extern "C" int _write(int fd, char* ptr, int len)
@@ -51,12 +54,17 @@ extern "C" void StartManagerTask(void *argument)
   /* Infinite loop */
 	while(1)
 	{
+		rtc.getTime(log.dateTime);
+		log.temparature=dht.getTempperature();
+		///send log to file 1
 
 	if(dht.getTempperature() > Temprature.criticalTemp){
 		if(stateOfTemp!=CRITICAL_TEMPRATURE){
 		ledB.blink();
 		buzzer.on();
 		stateOfTemp = CRITICAL_TEMPRATURE;
+		//log.state = stateOfTemp;
+		// send log to file2
 		}
 	}
 	else if(dht.getTempperature() > Temprature.warningTemp){
@@ -64,12 +72,14 @@ extern "C" void StartManagerTask(void *argument)
 		if(stateOfTemp==NORMAL_TEMPRATURE){
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
+			// send log to file2
 		}
 		if(stateOfTemp==CRITICAL_TEMPRATURE &&
 			dht.getTempperature() > (Temprature.criticalTemp-3)){
 			buzzer.off();
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
+			// send log to file2
 		}
 
 	}
@@ -78,11 +88,13 @@ extern "C" void StartManagerTask(void *argument)
 					ledB.off();
 					buzzer.off();
 					stateOfTemp = NORMAL_TEMPRATURE;
+					// send log to file2
 		}
 		if(stateOfTemp==WARNING_TEMPRATURE &&
 					dht.getTempperature() > (Temprature.warningTemp-3)){
 					ledB.off();
 					stateOfTemp = NORMAL_TEMPRATURE;
+					// send log to file2
 		}
 	}
 	osDelay(1000);

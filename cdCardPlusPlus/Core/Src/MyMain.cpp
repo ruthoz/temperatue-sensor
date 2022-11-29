@@ -13,15 +13,19 @@
 #include "fatfs.h"
 
 
-
 extern "C" void mainloop(){
+	HAL_Delay(1000); //a short delay is important to let the SD card settle
 	SDCard file("test.txt");
-	file.openFile();
-	file.printFile();
-	SDCard file2("write.txt");
-	BYTE readBuf[30];
-	strncpy((char*)readBuf, "a new file is made!", 20);
+	file.readFile();
 
-	file2.writeToFile(readBuf);
+	SDCard file2("write.txt");
+	char writeBuf[30];
+	strncpy(writeBuf, "a new file is made!", 20);
+	file2.writeToFile(writeBuf);
+	file2.readFile();
+
+
+
+
 
 }

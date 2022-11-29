@@ -12,7 +12,7 @@
 #define RTC_DATE_TIME_SIZE  7
 
 extern I2C_HandleTypeDef hi2c1;
-Rtc rtc(&hi2c1, 0xD0);
+
 
 int Rtc::bcdToInt(uint8_t bcd)
 {
