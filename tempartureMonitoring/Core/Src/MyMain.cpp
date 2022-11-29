@@ -12,6 +12,8 @@
 #include "DHT.h"
 #include "cmsis_os.h"
 #include "Flash.h"
+#include "RTC.h"
+#include "File.h"
 
 extern UART_HandleTypeDef huart2;
 extern TIM_HandleTypeDef htim16;
@@ -24,8 +26,10 @@ Led ledB(LD2_GPIO_Port , LD2_Pin );
 Dht dht(DHT11_GPIO_Port , DHT11_Pin, &htim16);
 Flash flash;
 thresholdTemp Temprature;
-log log;
 Rtc rtc(&hi2c1, 0xD0);
+DateTime dateTime;
+File file("test.txt");
+static char logBuffer[100];
 
 //////////////////////////////////////////////////////////////
 extern "C" int _write(int fd, char* ptr, int len)
@@ -48,26 +52,29 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 extern "C" void StartManagerTask(void *argument)
 {
   /* USER CODE BEGIN StartManagerTask */
-
+	file.initSDCard();
 	flash.read(&Temprature);
 	stateTemp stateOfTemp = NORMAL_TEMPRATURE;
+
   /* Infinite loop */
 	while(1)
 	{
-		rtc.getTime(log.dateTime);
-		log.temparature=dht.getTempperature();
-		///send log to file 1
+		rtc.getTime(&dateTime);
+		sprintf(logBuffer,"date time : %02d:%02d:%02d-%d-%02d/%02d/%02d temperature: %f \r\n",
+				dateTime.hours, dateTime.min, dateTime.sec, dateTime.weekDay,
+				dateTime.day, dateTime.month, dateTime.year,
+				dht.getTemperature() );
+		file.write(logBuffer);
 
-	if(dht.getTempperature() > Temprature.criticalTemp){
+	if(dht.getTemperature() > Temprature.criticalTemp){
 		if(stateOfTemp!=CRITICAL_TEMPRATURE){
 		ledB.blink();
 		buzzer.on();
 		stateOfTemp = CRITICAL_TEMPRATURE;
-		//log.state = stateOfTemp;
 		// send log to file2
 		}
 	}
-	else if(dht.getTempperature() > Temprature.warningTemp){
+	else if(dht.getTemperature() > Temprature.warningTemp){
 
 		if(stateOfTemp==NORMAL_TEMPRATURE){
 			ledB.on();
@@ -75,7 +82,7 @@ extern "C" void StartManagerTask(void *argument)
 			// send log to file2
 		}
 		if(stateOfTemp==CRITICAL_TEMPRATURE &&
-			dht.getTempperature() > (Temprature.criticalTemp-3)){
+			dht.getTemperature() > (Temprature.criticalTemp-3)){
 			buzzer.off();
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
@@ -91,7 +98,7 @@ extern "C" void StartManagerTask(void *argument)
 					// send log to file2
 		}
 		if(stateOfTemp==WARNING_TEMPRATURE &&
-					dht.getTempperature() > (Temprature.warningTemp-3)){
+					dht.getTemperature() > (Temprature.warningTemp-3)){
 					ledB.off();
 					stateOfTemp = NORMAL_TEMPRATURE;
 					// send log to file2

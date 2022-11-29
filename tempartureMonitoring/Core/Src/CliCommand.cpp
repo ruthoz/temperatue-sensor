@@ -7,6 +7,8 @@ extern Rtc rtc;
 extern Flash flash;
 extern thresholdTemp Temprature;
 extern CliContainer CliContainer;
+extern DateTime dateTime;
+extern File file;
 
 class LedOnCmd : public CliCommand {
 	Led *_led;
@@ -58,7 +60,6 @@ class getDataTimeCmd : public CliCommand {
 public:
 	getDataTimeCmd (const char * name, Rtc* rtc) : CliCommand(name), _rtc(rtc) {}
 	void doCommand(const char* param) override {
-		DateTime dateTime;
 		_rtc->getTime(&dateTime);
 		printf("%02d:%02d:%02d-%d-%02d/%02d/%02d\r\n",
 						dateTime.hours, dateTime.min, dateTime.sec,
@@ -109,7 +110,18 @@ public:
 	getCriticalTempCmd (const char * name, Flash* flash) : CliCommand(name), _flash(flash) {}
 	void doCommand(const char* param) override
 	{
-		//_flash->read(&Temprature);
+		_flash->read(&Temprature);
+	}
+};
+
+class clearCmd : public CliCommand {
+	File* _file;
+
+public:
+	clearCmd (const char * name, File* file) : CliCommand(name), _file(file) {}
+	void doCommand(const char* param) override
+	{
+		_file->clear();
 	}
 };
 
@@ -133,6 +145,9 @@ void CliInit()
 	CliContainer.add (new setWarningTempCmd("setWarning", &flash));
 
 	CliContainer.add (new getCriticalTempCmd("getCritical", &flash));
+
+	/////////////////file///////////////////////////////////////////
+	CliContainer.add (new clearCmd("clearLog", &file));
 
 }
 

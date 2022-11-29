@@ -19,18 +19,18 @@ SDCard::SDCard(const char* nameFile) {
 	}
 
 	 //get some statistics from the SD card
-	FATFS* getFreeFs;
-
-	fres = f_getfree("", &free_clusters, &getFreeFs);
-	if (fres != FR_OK) {
-	    myprintf("f_getfree error (%i)\r\n", fres);
-	    while(1);
-	}
-
-	//Formula comes from ChaN's documentation
-	total_sectors = (getFreeFs->n_fatent - 2) * getFreeFs->csize;
-	free_sectors = free_clusters * getFreeFs->csize;
-	//myprintf("SD card stats:\r\n%10lu KiB total drive space.\r\n%10lu KiB available.\r\n", total_sectors / 2, free_sectors / 2);
+//	FATFS* getFreeFs;
+//
+//	fres = f_getfree("", &free_clusters, &getFreeFs);
+//	if (fres != FR_OK) {
+//	    myprintf("f_getfree error (%i)\r\n", fres);
+//	    while(1);
+//	}
+//
+//	//Formula comes from ChaN's documentation
+//	total_sectors = (getFreeFs->n_fatent - 2) * getFreeFs->csize;
+//	free_sectors = free_clusters * getFreeFs->csize;
+//	//myprintf("SD card stats:\r\n%10lu KiB total drive space.\r\n%10lu KiB available.\r\n", total_sectors / 2, free_sectors / 2);
 }
 
 SDCard::~SDCard() {
@@ -85,7 +85,7 @@ void SDCard::writeToFile(const char* writeBuf){
     }
 
 	UINT bytesWrote;
-	fres = f_write(&fil, writeBuf, 40, &bytesWrote);
+	fres = f_write(&fil, writeBuf, strlen(writeBuf), &bytesWrote);
 	if(fres == FR_OK) {
 		myprintf("Wrote %i bytes to '%s'!\r\n", bytesWrote, _nameFile);
 	} else {

@@ -24,11 +24,5 @@ typedef enum _stateTemp{
 		NORMAL_TEMPRATURE,
 }stateTemp;
 
-struct log
-{
-	DateTime* dateTime;
-	stateTemp state;
-	uint8_t temparature;
-};
 
 #endif /* INC_MYMAIN_H_ */

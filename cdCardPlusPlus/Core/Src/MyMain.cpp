@@ -20,7 +20,7 @@ extern "C" void mainloop(){
 
 	SDCard file2("write.txt");
 	char writeBuf[30];
-	strncpy(writeBuf, "a new file is made!", 20);
+	strncpy(writeBuf, "a new file is made!\r\n", 22);
 	file2.writeToFile(writeBuf);
 	file2.readFile();
 

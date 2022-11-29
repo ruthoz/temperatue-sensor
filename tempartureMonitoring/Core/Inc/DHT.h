@@ -41,7 +41,7 @@ public:
 	int reciveData();
     ///
 	double getHumidty();
-	double getTempperature();
+	double getTemperature();
 };
 
 #endif /* INC_DHT_H_ */

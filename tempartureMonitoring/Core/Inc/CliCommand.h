@@ -8,7 +8,7 @@
 #include "RTC.h"
 #include <stdio.h>
 #include "Flash.h"
-
+#include "File.h"
 
 #ifndef SRC_ICOMMAND_H_
 #define SRC_ICOMMAND_H_

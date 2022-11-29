@@ -143,7 +143,7 @@ double Dht::getHumidty()
 	return _humidity;
 }
 
-double Dht::getTempperature()
+double Dht::getTemperature()
 {
 	return _temperature;
 }
