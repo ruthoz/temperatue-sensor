@@ -13,7 +13,7 @@
 
 struct thresholdTemp
 {
-		uint16_t criticalTemp = 70;
+	    uint16_t criticalTemp = 70;
 		uint16_t warningTemp = 50;
 		uint16_t  magicNum = 0x5A5A;
 };

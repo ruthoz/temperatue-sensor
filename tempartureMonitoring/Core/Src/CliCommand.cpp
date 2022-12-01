@@ -8,7 +8,8 @@ extern Flash flash;
 extern thresholdTemp Temprature;
 extern CliContainer CliContainer;
 extern DateTime dateTime;
-extern File file;
+extern File logFile;
+extern File warningFile;
 
 class LedOnCmd : public CliCommand {
 	Led *_led;
@@ -73,7 +74,17 @@ class setDataTimeCmd : public CliCommand {
 public:
 	setDataTimeCmd (const char * name, Rtc* rtc) : CliCommand(name), _rtc(rtc) {}
 	void doCommand(const char* param) override {
-		//DateTime dateTime;
+		const char s[2] = ":";
+		char* date= (char*) param;
+		//day:month:year:hours:min:sec
+		//"01:01:22:12:12:12"
+		dateTime.day = atoi(strtok(date, s));
+		dateTime.month = atoi(strtok(NULL, s));
+		dateTime.year = atoi(strtok(NULL, s));
+		dateTime.hours = atoi(strtok(NULL, s));
+		dateTime.min = atoi(strtok(NULL, s));
+		dateTime.sec = atoi(strtok(NULL, s));
+		_rtc->setTime(&dateTime);
 	}
 };
 
@@ -85,8 +96,12 @@ public:
 	void doCommand(const char* param) override {
 		uint16_t val;
 		val = atoi(param);
+		if(Temprature.warningTemp > val){
+			printf("A critical temperature cannot be more then warning temperature\r\n");
+			return;
+		}
 		Temprature.criticalTemp = val;
-		_flash->writh(&Temprature, sizeof(thresholdTemp));
+		_flash->writh(&Temprature);
 	}
 };
 
@@ -98,8 +113,12 @@ public:
 	void doCommand(const char* param) override {
 		uint16_t val;
 		val = atoi(param);
+		if(Temprature.criticalTemp < val){
+			printf("A warning temperature cannot be less then warning temperature\r\n");
+			return;
+		}
 		Temprature.warningTemp = val;
-		_flash->writh(&Temprature, sizeof(thresholdTemp));
+		_flash->writh(&Temprature);
 	}
 };
 
@@ -110,20 +129,50 @@ public:
 	getCriticalTempCmd (const char * name, Flash* flash) : CliCommand(name), _flash(flash) {}
 	void doCommand(const char* param) override
 	{
-		_flash->read(&Temprature);
+		_flash->read();
+		printf("Critical temperature = %d\r\nWarning temperature = %d\r\n" ,Temprature.criticalTemp , Temprature.warningTemp);
 	}
 };
 
-class clearCmd : public CliCommand {
+class clearFileCmd : public CliCommand {
 	File* _file;
 
 public:
-	clearCmd (const char * name, File* file) : CliCommand(name), _file(file) {}
+	clearFileCmd (const char * name, File* file) : CliCommand(name), _file(file) {}
 	void doCommand(const char* param) override
 	{
 		_file->clear();
 	}
 };
+
+class printFileCmd : public CliCommand {
+	File* _file;
+
+public:
+	printFileCmd (const char * name, File* file) : CliCommand(name), _file(file) {}
+	void doCommand(const char* param) override
+	{
+		_file->read();
+	}
+};
+
+class helpCmd : public CliCommand {
+
+public:
+	helpCmd (const char * name) : CliCommand(name) {}
+	void doCommand(const char* param) override
+	{
+		printf("1. help\r\n"
+				"2. getTime\r\n"
+				"3.setTime day:month:year:hours:min:sec\r\n"
+				"4.setCritical param\r\n"
+				"5.setWarning param\r\n"
+		        "6.clearLog\r\n"
+				"7.printLog\r\n"
+				"8.printLog\r\n");
+	}
+};
+
 
 
 void CliInit()
@@ -147,7 +196,12 @@ void CliInit()
 	CliContainer.add (new getCriticalTempCmd("getCritical", &flash));
 
 	/////////////////file///////////////////////////////////////////
-	CliContainer.add (new clearCmd("clearLog", &file));
+	CliContainer.add (new clearFileCmd("clearLog", &logFile));
+	CliContainer.add (new printFileCmd("printLog", &warningFile));
+
+	////////////////help/////////////////////////////////////////
+	CliContainer.add (new helpCmd("help"));
+
 
 }
 

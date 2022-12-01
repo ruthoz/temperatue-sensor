@@ -26,8 +26,8 @@ public:
 	~Flash(){};
 
 	void erase();
-	void writh( void* data, size_t size);
-	void read(thresholdTemp* buffer);
+	void writh( void* data);
+	void read();
 };
 
 #endif /* FLASH_H_ */

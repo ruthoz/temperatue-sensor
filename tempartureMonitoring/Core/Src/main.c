@@ -94,6 +94,11 @@ const osThreadAttr_t ManagerTask_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
+/* Definitions for stopBuzzer */
+osSemaphoreId_t stopBuzzerHandle;
+const osSemaphoreAttr_t stopBuzzer_attributes = {
+  .name = "stopBuzzer"
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -168,6 +173,10 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of stopBuzzer */
+  stopBuzzerHandle = osSemaphoreNew(1, 1, &stopBuzzer_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -549,7 +558,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : B2_Pin */
   GPIO_InitStruct.Pin = B2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B2_GPIO_Port, &GPIO_InitStruct);
 

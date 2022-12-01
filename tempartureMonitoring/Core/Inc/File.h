@@ -29,7 +29,6 @@ public:
 	~File(){};
 
 	void initSDCard();
-	void myprintf(const char *fmt, ...);
 	void read();
 	void write(const char* writeBuf);
 	void clear();

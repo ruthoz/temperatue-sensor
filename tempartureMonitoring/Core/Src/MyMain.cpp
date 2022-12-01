@@ -28,7 +28,8 @@ Flash flash;
 thresholdTemp Temprature;
 Rtc rtc(&hi2c1, 0xD0);
 DateTime dateTime;
-File file("test.txt");
+File logFile("log.txt");
+File warningFile("warning.txt");
 static char logBuffer[100];
 
 //////////////////////////////////////////////////////////////
@@ -44,64 +45,84 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	button.interrupt();
 }
+/////////////////////////////////////////////////////////////
 
 
+void sendLog(){
+	rtc.getTime(&dateTime);
+	sprintf(logBuffer,"date time : %02d:%02d:%02d-%d-%02d/%02d/%02d temperature: %f \r\n",
+				dateTime.hours, dateTime.min, dateTime.sec, dateTime.weekDay,
+				dateTime.day, dateTime.month, dateTime.year,
+				dht.getTemperature() );
+	logFile.write(logBuffer);
+}
+
+
+void sendWarning(const char* message){
+	rtc.getTime(&dateTime);
+	sprintf(logBuffer,"date time : %02d:%02d:%02d-%d-%02d/%02d/%02d temperature: %f - %s \r\n",
+					dateTime.hours, dateTime.min, dateTime.sec, dateTime.weekDay,
+					dateTime.day, dateTime.month, dateTime.year,
+					dht.getTemperature() , message );
+	warningFile.write(logBuffer);
+}
 
 
 
 extern "C" void StartManagerTask(void *argument)
 {
   /* USER CODE BEGIN StartManagerTask */
-	file.initSDCard();
-	flash.read(&Temprature);
+	logFile.initSDCard();
+	flash.read();
 	stateTemp stateOfTemp = NORMAL_TEMPRATURE;
+	uint8_t countMin = 0;
 
-  /* Infinite loop */
+	/* Infinite loop */
 	while(1)
 	{
-		rtc.getTime(&dateTime);
-		sprintf(logBuffer,"date time : %02d:%02d:%02d-%d-%02d/%02d/%02d temperature: %f \r\n",
-				dateTime.hours, dateTime.min, dateTime.sec, dateTime.weekDay,
-				dateTime.day, dateTime.month, dateTime.year,
-				dht.getTemperature() );
-		file.write(logBuffer);
-
+	// count minutes and send log all secends
+	countMin++;
+	if(countMin>=1000){
+		sendLog();
+		countMin = 0;
+	}
+	///////////CRITICAL TEMPERATURE/////////////////////
 	if(dht.getTemperature() > Temprature.criticalTemp){
 		if(stateOfTemp!=CRITICAL_TEMPRATURE){
 		ledB.blink();
 		buzzer.on();
 		stateOfTemp = CRITICAL_TEMPRATURE;
-		// send log to file2
+		sendWarning("WARNING! THE TEMPERTURE IS CRITICAL!");
 		}
 	}
+	//////////WARNING TEMPERATURE///////////////////////
 	else if(dht.getTemperature() > Temprature.warningTemp){
 
 		if(stateOfTemp==NORMAL_TEMPRATURE){
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
-			// send log to file2
+			sendWarning("WARNING! THE TEMPERTURE IS ABOVE NORMAL!");
 		}
-		if(stateOfTemp==CRITICAL_TEMPRATURE &&
+		else if(stateOfTemp==CRITICAL_TEMPRATURE &&
 			dht.getTemperature() > (Temprature.criticalTemp-3)){
 			buzzer.off();
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
-			// send log to file2
+			sendWarning("WARNING! THE TEMPERTURE IS ABOVE NORMAL!");
 		}
 
 	}
+	//////////NORMAL TEMPERATURE///////////////////////
 	else{
 		if(stateOfTemp==CRITICAL_TEMPRATURE){
 					ledB.off();
 					buzzer.off();
 					stateOfTemp = NORMAL_TEMPRATURE;
-					// send log to file2
 		}
-		if(stateOfTemp==WARNING_TEMPRATURE &&
+		else if(stateOfTemp==WARNING_TEMPRATURE &&
 					dht.getTemperature() > (Temprature.warningTemp-3)){
 					ledB.off();
 					stateOfTemp = NORMAL_TEMPRATURE;
-					// send log to file2
 		}
 	}
 	osDelay(1000);

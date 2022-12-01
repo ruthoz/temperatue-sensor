@@ -83,8 +83,8 @@ all: main-build
 main-build: tempartureMonitoring.elf secondary-outputs
 
 # Tool invocations
-tempartureMonitoring.elf tempartureMonitoring.map: $(OBJS) $(USER_OBJS) C:\Users\student\STM32CubeIDE\workspace_1.9.0\tempartureMonitoring\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "tempartureMonitoring.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\tempartureMonitoring\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tempartureMonitoring.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+tempartureMonitoring.elf tempartureMonitoring.map: $(OBJS) $(USER_OBJS) C:\Users\ADMIN\STM32CubeIDE\workspace_1.10.1\stm-project\tempartureMonitoring\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "tempartureMonitoring.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\ADMIN\STM32CubeIDE\workspace_1.10.1\stm-project\tempartureMonitoring\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tempartureMonitoring.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

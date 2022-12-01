@@ -6,7 +6,7 @@
  */
 
 #include "Flash.h"
-
+extern thresholdTemp Temprature;
 
 void Flash::erase()
 {
@@ -23,23 +23,24 @@ void Flash::erase()
 	HAL_FLASHEx_Erase(&basicFlash, &pageError);
 }
 
-void Flash::writh(void* data, size_t size)
+void Flash::writh(void* data)
 {
+	HAL_FLASH_Unlock();
 	erase();
 	uint64_t* Data = (uint64_t *)(data);
-	for(uint64_t i = 0; i < size ; i ++){
+	for(uint64_t i = 0; i < 18 ; i ++){
 		HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, (uint32_t)_flashAdd+(i*8), *(Data+i));
 	}
 }
 
-void Flash::read(thresholdTemp* buffer)
+void Flash::read()
 {
 	HAL_FLASH_Unlock();
 	thresholdTemp * data = (thresholdTemp *)(_flashAdd);
 	if(data->magicNum!= 0x5A5A){
 		return;
 	}
-	buffer = (thresholdTemp *)(_flashAdd);
+	Temprature = *data;
 }
 
 
