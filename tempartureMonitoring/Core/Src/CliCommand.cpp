@@ -8,7 +8,6 @@ extern Flash flash;
 extern thresholdTemp Temprature;
 extern CliContainer CliContainer;
 extern DateTime dateTime;
-extern File logFile;
 extern File warningFile;
 
 class LedOnCmd : public CliCommand {
@@ -196,7 +195,7 @@ void CliInit()
 	CliContainer.add (new getCriticalTempCmd("getCritical", &flash));
 
 	/////////////////file///////////////////////////////////////////
-	CliContainer.add (new clearFileCmd("clearLog", &logFile));
+	CliContainer.add (new clearFileCmd("clearLog", &warningFile));
 	CliContainer.add (new printFileCmd("printLog", &warningFile));
 
 	////////////////help/////////////////////////////////////////

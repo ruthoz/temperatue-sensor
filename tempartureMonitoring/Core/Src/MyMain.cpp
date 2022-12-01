@@ -67,7 +67,19 @@ void sendWarning(const char* message){
 	warningFile.write(logBuffer);
 }
 
-
+//////////////////////////////////////////////////////////////////////////
+extern "C" void StartsendLogTask(void *argument)
+{
+  /* USER CODE BEGIN StartsendLogTask */
+  /* Infinite loop */
+  while(1)
+  {
+	// Wheat and send log all seconds
+	osDelay(60000);
+	sendLog();
+  }
+  /* USER CODE END StartsendLogTask */
+}
 
 extern "C" void StartManagerTask(void *argument)
 {
@@ -75,19 +87,25 @@ extern "C" void StartManagerTask(void *argument)
 	logFile.initSDCard();
 	flash.read();
 	stateTemp stateOfTemp = NORMAL_TEMPRATURE;
-	uint8_t countMin = 0;
-
 	/* Infinite loop */
 	while(1)
 	{
-	// count minutes and send log all secends
-	countMin++;
-	if(countMin>=1000){
-		sendLog();
-		countMin = 0;
+
+	//////////NORMAL TEMPERATURE///////////////////////
+	if(dht.getTemperature() < Temprature.warningTemp){
+			if(stateOfTemp==CRITICAL_TEMPRATURE){
+						ledB.off();
+						buzzer.off();
+						stateOfTemp = NORMAL_TEMPRATURE;
+			}
+			else if(stateOfTemp==WARNING_TEMPRATURE &&
+						dht.getTemperature() < (Temprature.warningTemp-3)){
+						ledB.off();
+						stateOfTemp = NORMAL_TEMPRATURE;
+			}
 	}
 	///////////CRITICAL TEMPERATURE/////////////////////
-	if(dht.getTemperature() > Temprature.criticalTemp){
+	else if(dht.getTemperature() > Temprature.criticalTemp){
 		if(stateOfTemp!=CRITICAL_TEMPRATURE){
 		ledB.blink();
 		buzzer.on();
@@ -96,36 +114,22 @@ extern "C" void StartManagerTask(void *argument)
 		}
 	}
 	//////////WARNING TEMPERATURE///////////////////////
-	else if(dht.getTemperature() > Temprature.warningTemp){
-
+	else{
 		if(stateOfTemp==NORMAL_TEMPRATURE){
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
 			sendWarning("WARNING! THE TEMPERTURE IS ABOVE NORMAL!");
 		}
 		else if(stateOfTemp==CRITICAL_TEMPRATURE &&
-			dht.getTemperature() > (Temprature.criticalTemp-3)){
+			dht.getTemperature() < (Temprature.criticalTemp-3)){
 			buzzer.off();
 			ledB.on();
 			stateOfTemp = WARNING_TEMPRATURE;
 			sendWarning("WARNING! THE TEMPERTURE IS ABOVE NORMAL!");
 		}
+	}
 
-	}
-	//////////NORMAL TEMPERATURE///////////////////////
-	else{
-		if(stateOfTemp==CRITICAL_TEMPRATURE){
-					ledB.off();
-					buzzer.off();
-					stateOfTemp = NORMAL_TEMPRATURE;
-		}
-		else if(stateOfTemp==WARNING_TEMPRATURE &&
-					dht.getTemperature() > (Temprature.warningTemp-3)){
-					ledB.off();
-					stateOfTemp = NORMAL_TEMPRATURE;
-		}
-	}
-	osDelay(1000);
+	osDelay(1);
   }
   /* USER CODE END StartManagerTask */
 }

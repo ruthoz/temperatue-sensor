@@ -40,7 +40,7 @@ void File::read(){
 	}
 	while(rres != 0) {
 		rres = f_gets((TCHAR*)readBuf, 256, &fil);
-		printf("Read string from file contents: %s\r\n", readBuf);
+		printf("%s\r\n", readBuf);
 	}
 
 	//Be a tidy kiwi - don't forget to close your file!
@@ -75,7 +75,7 @@ void File::clear(){
 	//write a file "write.txt"
 	fres = f_open(&fil, _nameFile, FA_CREATE_ALWAYS);
 	if(fres == FR_OK) {
-    	//myprintf("I was able to open 'write.txt' for writing\r\n");
+     //printf("I was able to open 'write.txt' for writing\r\n");
 	} else {
 		printf("f_open error (%i)\r\n", fres);
     }

@@ -42,7 +42,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c1;
 
 SPI_HandleTypeDef hspi1;
 
@@ -94,6 +94,13 @@ const osThreadAttr_t ManagerTask_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
+/* Definitions for sendLogTask */
+osThreadId_t sendLogTaskHandle;
+const osThreadAttr_t sendLogTask_attributes = {
+  .name = "sendLogTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 /* Definitions for stopBuzzer */
 osSemaphoreId_t stopBuzzerHandle;
 const osSemaphoreAttr_t stopBuzzer_attributes = {
@@ -118,6 +125,7 @@ extern void StartComTask(void *argument);
 extern void StartbuttonTak(void *argument);
 extern void StartDhtTask(void *argument);
 extern void StartManagerTask(void *argument);
+extern void StartsendLogTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -208,6 +216,9 @@ int main(void)
 
   /* creation of ManagerTask */
   ManagerTaskHandle = osThreadNew(StartManagerTask, NULL, &ManagerTask_attributes);
+
+  /* creation of sendLogTask */
+  sendLogTaskHandle = osThreadNew(StartsendLogTask, NULL, &sendLogTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
